@@ -1,6 +1,8 @@
 export type Props<T extends HTMLElement = HTMLElement> = Partial<
-  Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName'>
-> & {
+  Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName '>
+  > & {
+  type?: string;
+  placeholder?: string;
   tag: keyof HTMLElementTagNameMap;
 };
 
@@ -41,5 +43,25 @@ export class Abstract<T extends HTMLElement = HTMLElement> {
   public destroyChild(): void {
     this.child.forEach(child => child.destroy());
     this.child = [];
+  }
+
+  public getValue(): string {
+    let value = '';
+    if (this.element instanceof HTMLInputElement) {
+      value = this.element.value.trim();
+    };
+    return value;
+  }
+
+  public addClass(classNameClassName: string): void {
+    this.element.classList.add(classNameClassName);
+  }
+
+  public toggleClass(classSurname: string): void {
+    this.element.classList.toggle(classSurname);
+  }
+
+  public removeClass(className: string): void {
+    this.element.classList.remove(className);
   }
 }

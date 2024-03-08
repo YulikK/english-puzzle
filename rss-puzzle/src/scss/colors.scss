@@ -1,0 +1,7 @@
+$color-bth-1: #b5d6f5;
+$color-btn-2: #fa9ec9;
+$color-btn-3: #ffa972;
+
+@function shadow() {
+  @return rgba(0, 0, 0, 0.4);
+}
