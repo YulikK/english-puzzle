@@ -1,20 +1,21 @@
-import { Abstract } from '../abstract-components';
+import { BaseComponent } from '../base-components';
 import { validateField } from "@/app/utils/validation";
 import { p } from "@/app/components/tags";
 import classes from './input.module.scss';
+import { FieldName } from '@/app/utils/types';
 
 interface Props {
   tag?: string;
-  id: 'firstName' | 'lastName';
+  id: FieldName;
   type: string;
   placeholder: string;
   className?: string;
-  errorContainer: Abstract;
+  errorContainer: BaseComponent;
 }
 
-export class Input extends Abstract{
-  private errorContainer: Abstract;
-  private id: 'firstName' | 'lastName';
+export class Input extends BaseComponent{
+  private errorContainer: BaseComponent;
+  private id: FieldName;
   constructor({ id, type, placeholder, className, errorContainer }: Props) {
     super({ tag: 'input', id, type, placeholder, className: `${classes.input} ${className || ''}` }) 
     this.id = id;
@@ -29,7 +30,6 @@ export class Input extends Abstract{
 
   private onChange = (event: Event): void =>{
     event.preventDefault();
-    console.log('onchange');
     this.validate();
   }
 

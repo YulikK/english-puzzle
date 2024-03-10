@@ -1,0 +1,56 @@
+@import 'src/scss/colors.scss';
+@import 'src/scss/constant.scss';
+.progressWrapper{
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin-top: 100px;
+}
+.progressBar {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progressCircle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg at 50% 50%, #b5d6f5 0%, #fa9ec9 33%, #ffa972 66%, #0337FF00 65%);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressInformation {
+  width: 80%;
+  height: 80%;
+  background: #223a57;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.level {
+  color: rgb(196, 219, 244);
+  font-family: $font-stack;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: center;
+  margin: 0;
+}
+
+.round {
+  color: rgb(196, 219, 244);
+  font-family: $font-stack;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  text-align: center;
+  margin: 0;
+}

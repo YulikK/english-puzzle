@@ -1,4 +1,4 @@
-import { Abstract } from '../abstract-components';
+import { BaseComponent } from '../base-components';
 
 import styles from './button.module.scss';
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Button = ({textContent, onClick, className }: Props) =>
-  new Abstract({
+  new BaseComponent({
     tag: 'button',
     className: `${styles.button} ${className || ''}`,
     textContent,

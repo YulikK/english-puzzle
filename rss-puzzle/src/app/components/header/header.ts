@@ -1,10 +1,10 @@
-import { Abstract } from "@/app/components/abstract-components";
+import { BaseComponent } from "@/app/components/base-components";
 import { div, h1, p, img, a } from "@/app/components/tags";
 import classes from "./header.module.scss";
 
-export class Header extends Abstract {
-  public logoutBtn: Abstract;
-  private header: Abstract;
+export class Header extends BaseComponent {
+  public logoutBtn: BaseComponent;
+  private header: BaseComponent;
   private logoutCallback: () => void;
 
   constructor(logoutCallback: () => void) {

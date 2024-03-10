@@ -2,17 +2,20 @@ export type Props<T extends HTMLElement = HTMLElement> = Partial<
   Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName '>
   > & {
   type?: string;
+  htmlFor?: T extends HTMLLabelElement ? string : never;
+  checked?: T extends HTMLInputElement ? boolean : never;
+  id?: string;
   placeholder?: string;
   tag: keyof HTMLElementTagNameMap;
 };
 
 export type ElementProps<T extends HTMLElement = HTMLElement> = Omit<Props<T>, 'tag'>;
 
-export class Abstract<T extends HTMLElement = HTMLElement> {
+export class BaseComponent<T extends HTMLElement = HTMLElement> {
   protected element: T;
-  protected child: Abstract[] = [];
+  protected child: BaseComponent[] = [];
 
-  constructor(props: Props<T>, ...child: Abstract[]) {
+  constructor(props: Props<T>, ...child: BaseComponent[]) {
     this.element = <T>document.createElement(props.tag);
     Object.assign(this.element, props);
     if (child) {
@@ -20,12 +23,12 @@ export class Abstract<T extends HTMLElement = HTMLElement> {
     }
   }
   
-  public append(child: Abstract): void {
+  public append(child: BaseComponent): void {
       this.child.push(child);
       this.element.append(child.getElement());
   }
   
-  public appendChild(child: Abstract[]): void {
+  public appendChild(child: BaseComponent[]): void {
     child.forEach((el) => {
       this.append(el);
     });
@@ -38,6 +41,10 @@ export class Abstract<T extends HTMLElement = HTMLElement> {
   public destroy(): void {
     this.destroyChild();
     this.element.remove();
+  }
+
+  public clear(): void {
+    this.element.innerHTML = '';
   }
 
   public destroyChild(): void {

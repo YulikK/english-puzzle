@@ -1,4 +1,4 @@
-import { Abstract } from "@/app/components/abstract-components";
+import { BaseComponent } from "@/app/components/base-components";
 import { div, h2, p } from "@/app/components/tags";
 import { Button } from "@/app/components/button/button";
 import { Header } from "@/app/components/header/header";
@@ -6,20 +6,21 @@ import classes from "./welcome.module.scss";
 import { WELCOME_DESCRIPTION } from "../../../../constant";
 import User from "@/app/Entities/user";
 
-export class Welcome extends Abstract {
-  public startBtn: Abstract;
-  private modal: Abstract;
-  private header: Abstract;
+export class Welcome extends BaseComponent {
+  public startBtn: BaseComponent;
+  private modal: BaseComponent;
+  private header: BaseComponent;
+  private startCallback: () => void;
 
-  constructor(user: User, logoutCallback: () => void) {
+  constructor(user: User, logoutCallback: () => void, startCallback: () => void) {
     super({ tag: 'div', className: classes.pageWrapper }); 
     this.header = new Header(logoutCallback);
-
+    this.startCallback = startCallback;
     const userName = user.getFullName();
     this.startBtn = Button({
       textContent: 'Start',
       onClick: () => {
-        console.log('onClick startBtn');
+        this.startCallback()
       },
       className: classes.start
     });

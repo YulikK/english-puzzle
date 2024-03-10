@@ -1,9 +1,11 @@
 import { MIN_LENGTH_LAST_NAME, MIN_LENGTH_FIRST_NAME } from "@/constant";
+import { FieldName } from "./types";
+
 type ValidationType = {
   isValid: boolean;
   error: string;
 }
-export function validateField(value: string, field: 'firstName' | 'lastName'): ValidationType {
+export function validateField(value: string, field: FieldName): ValidationType {
   const validation: ValidationType = {
     isValid: false,
     error: '',
@@ -22,14 +24,14 @@ export function validateField(value: string, field: 'firstName' | 'lastName'): V
   return validation;
 }
 
-function getValidationConstant(field: 'firstName' | 'lastName') {
+function getValidationConstant(field: FieldName) {
   const regex = new RegExp('[a-zA-Z-]');
   let message = '';
   let minLength = 0;
-  if (field === 'firstName') {
+  if (field === FieldName.firstName) {
     message = 'First name';
     minLength = MIN_LENGTH_FIRST_NAME;
-  } else {
+  } else if (field === FieldName.lastName){
     message = 'Last name';
     minLength = MIN_LENGTH_LAST_NAME;
   }

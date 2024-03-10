@@ -1,13 +1,21 @@
+import Store from "../API/store";
 export default class User {
-  public firstName: string;
-  public lastName: string;
-  constructor() {
-    this.firstName = '';
-    this.lastName = '';
+  public firstName: string = '';
+  public lastName: string = '';
+  private store: Store;
+  constructor(store: Store) {
+    this.store = store;
+    const savedUser = this.store.getUser();
+    if (savedUser) {
+      this.setName(savedUser.firstName, savedUser.lastName, false);
+    }
   }
-  public setName(firstName: string, lastName: string) {
+  public setName(firstName: string, lastName: string, toStore: boolean = true): void {
     this.firstName = firstName;
     this.lastName = lastName;
+    if (toStore) {
+      this.store.setUser(this);
+    }
   }
   
   public getFullName() {

@@ -1,0 +1,46 @@
+@import 'src/scss/constant.scss';
+@import 'src/scss/utils.scss';
+@keyframes rotateAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+.hide {
+  @include visually-hidden;
+}
+
+.sound{
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 50%;
+  width: 41px;
+  height: 41px;
+  margin: 10px;
+
+  &On{
+    background: conic-gradient(from 0deg at 100%, #b5d6f5 0%, #fa9ec9 33%, #ffa972 66%, #b5d6f5 100%);
+    animation: rotateAnimation 2s linear infinite;
+    background-size: 30% 100%;
+  }
+}
+
+.soundImg {
+  width: 41px;
+  height: 41px;
+}
+
+.text {
+  color: rgb(30, 66, 98);
+  font-family: $font-stack;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin: 10px;
+}

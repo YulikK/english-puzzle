@@ -1,5 +1,7 @@
-import { STORE_NAME, STORE_USER } from "@/constant";
+import { STORE_NAME, STORE_USER, STORE_OPTIONS } from "@/constant";
 import User from "../Entities/user";
+import { OptionsType } from "../utils/types";
+
 
 export default class Store {
   private storage;
@@ -18,8 +20,18 @@ export default class Store {
     this.set<User>(STORE_USER, user);
   }
 
+  getOptions() {
+    return this.get<OptionsType>(STORE_OPTIONS);
+  }
+
+  setOptions(options: OptionsType) {
+    console.log(options);
+    this.set<OptionsType>(STORE_OPTIONS, options);
+  }
+
   removeUser() {
     this.storage.removeItem(`${this.storeKey}-${STORE_USER}`);
+    this.storage.removeItem(`${this.storeKey}-${STORE_OPTIONS}`);
   }
 
   private set<T>(key: string, value: T) {
