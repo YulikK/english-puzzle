@@ -29,6 +29,10 @@ module.exports = {
   plugins: ['import', '@typescript-eslint'],
   root: true,
   rules: {
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
     '@typescript-eslint/consistent-type-exports': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
@@ -47,4 +51,14 @@ module.exports = {
     curly: ['error', 'all'],
     'max-lines-per-function': ['error', { max: 40, skipBlankLines: true, skipComments: true }],
   },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ["@", "./src"]
+        ],
+        extensions: [".ts", ".js", ".jsx", ".json"]
+      }
+    }
+  }
 };

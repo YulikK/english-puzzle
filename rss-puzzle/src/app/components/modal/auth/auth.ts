@@ -1,22 +1,29 @@
-import { BaseComponent } from "@/app/components/base-components";
-import { div, h2 } from "@/app/components/tags";
-import { Button } from "@/app/components/button/button";
-import { Input } from "../../input/input";
+import { BaseComponent } from "@/app/components/base-components.ts";
+import { div, h2 } from "@/app/components/tags.ts";
+import Button from "@/app/components/button/button.ts";
+import type User from "@/app/Entities/user.ts";
+import { FieldName } from "@/app/utils/types.ts";
+import Input from "../../input/input.ts";
 import classes from "./auth.module.scss";
-import User from "@/app/Entities/user";
-import { FieldName } from "@/app/utils/types";
 
-export class Auth extends BaseComponent {
+export default class Auth extends BaseComponent {
   public loginBtn: BaseComponent;
+
   private modal: BaseComponent;
+
   private user: User;
+
   private firstName: Input;
+
   private lastName: Input;
+
   private errorsContainer: {
     firstName: BaseComponent;
     lastName: BaseComponent;
   }
+
   private loginCallback: () => void;
+
   constructor(user: User, loginCallback: () => void) {
     super({ tag: 'form', className: classes.authPage, id: 'auth'}); 
     this.user = user;
@@ -50,7 +57,7 @@ export class Auth extends BaseComponent {
     this.appendChild([this.modal])
   }
 
-  login = () => {
+  private login = (): void => {
 
     if (this.validateForm()) {
       this.updateUser();
@@ -59,13 +66,11 @@ export class Auth extends BaseComponent {
     
   }
 
-  private updateUser() {
+  private updateUser(): void {
     const firstName = this.firstName.getValue();
     const lastName = this.lastName.getValue();
     this.user.setName(firstName, lastName);
   }
 
-  private validateForm = (): boolean =>  {
-    return this.firstName.isValid() && this.lastName.isValid();
-  }
+  private validateForm = (): boolean =>  this.firstName.isValid() && this.lastName.isValid()
 }

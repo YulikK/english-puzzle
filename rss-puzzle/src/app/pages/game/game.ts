@@ -1,19 +1,31 @@
-import { BaseComponent } from "@/app/components/base-components";
+import { BaseComponent } from "@/app/components/base-components.ts";
+import { div, aside, a, img } from "@/app/components/tags.ts";
+import Header from "@/app/components/header/header.ts";
+import ProgressBar from "@/app/components/progress-bar/progress-bar.ts";
+import type Options from "@/app/Entities/options.ts";
+import Hint from "@/app/components/hint/hint.ts";
+import PuzzleGame from "@/app/components/puzzle-game/puzzle-game.ts";
+import { HintName } from "@/app/utils/types.ts";
 import classes from "./game.module.scss";
-import { div, aside, a, img } from "@/app/components/tags";
-import { Header } from "@/app/components/header/header";
-import { ProgressBar } from "@/app/components/progress-bar/progress-bar";
-import Options from "@/app/Entities/options";
-import Hint from "@/app/components/hint/hint";
 
-export class Game extends BaseComponent {
+export default class Game extends BaseComponent {
   private container: HTMLElement;
+
   private options: Options;
+
   private header: Header;
+
   private progressBar: ProgressBar;
+
   private hintOptionsContainer: BaseComponent;
+
   private hintContainer: BaseComponent;
+
+  private puzzleGameContainer: BaseComponent;
+
   private hint: Hint;
+
+  private puzzleGame: PuzzleGame;
 
   constructor(container: HTMLElement, options:Options, logoutCallback: () => void) {
     super({ tag: 'div', className: classes.gamePage }); 
@@ -27,29 +39,32 @@ export class Game extends BaseComponent {
     this.hint = new Hint(this.options);
     this.hintOptionsContainer.appendChild(this.hint.getOptions());
     this.hintContainer.appendChild(this.hint.getHint());
+    this.puzzleGameContainer = div({ className: classes.gameWrapper }, this.hintContainer);
+    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, options.getOptions(HintName.onPicture));
+    this.hint.setOnPictureCallback(this.puzzleGame.backgroundToggle);
   }
 
-  showGame() {
+  public showGame(): void {
     this.container.append(this.element);
     this.appendChild([this.header,
       div({ className: classes.main },
         aside({ className: classes.menu },
-          div({ className: classes.menuWrapper }, 
+          div({ className: classes.menuWrapper },
             this.progressBar,
             this.hintOptionsContainer,
             div({ className: classes.linksWrapper },
               a({ className: classes.link, href: 'https://github.com/YulikK', target: '_blank' },
-                img( { src: 'img/git.png', alt: 'GitHub', className: classes.logoGit})
+                img({ src: 'img/git.png', alt: 'GitHub', className: classes.logoGit })
               ),
               a({ className: classes.link, href: 'https://rs.school/js/', target: '_blank' },
-                img( { src: 'img/RS.png', alt: 'RS School', className: classes.logoRs})
+                img({ src: 'img/RS.png', alt: 'RS School', className: classes.logoRs })
               )
             )
           )
         ),
-        div({ className: classes.gameWrapper },
-          this.hintContainer))
-      ])
+        this.puzzleGameContainer
+      )
+    ]);
   }
   
 }

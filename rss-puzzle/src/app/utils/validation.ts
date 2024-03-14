@@ -1,11 +1,27 @@
-import { MIN_LENGTH_LAST_NAME, MIN_LENGTH_FIRST_NAME } from "@/constant";
-import { FieldName } from "./types";
+import { MIN_LENGTH_LAST_NAME, MIN_LENGTH_FIRST_NAME } from '@/constant.ts';
+import { FieldName } from "./types.ts";
 
 type ValidationType = {
   isValid: boolean;
   error: string;
 }
-export function validateField(value: string, field: FieldName): ValidationType {
+
+function getValidationConstant(field: FieldName):{message: string, minLength: number, regex: RegExp} {
+  const regex = /[a-zA-Z-]/;
+  let message = '';
+  let minLength = 0;
+  if (field === FieldName.firstName) {
+    message = 'First name';
+    minLength = MIN_LENGTH_FIRST_NAME;
+  } else if (field === FieldName.lastName){
+    message = 'Last name';
+    minLength = MIN_LENGTH_LAST_NAME;
+  }
+  return { message, minLength, regex };
+
+}
+
+export default function validateField(value: string, field: FieldName): ValidationType {
   const validation: ValidationType = {
     isValid: false,
     error: '',
@@ -24,17 +40,3 @@ export function validateField(value: string, field: FieldName): ValidationType {
   return validation;
 }
 
-function getValidationConstant(field: FieldName) {
-  const regex = new RegExp('[a-zA-Z-]');
-  let message = '';
-  let minLength = 0;
-  if (field === FieldName.firstName) {
-    message = 'First name';
-    minLength = MIN_LENGTH_FIRST_NAME;
-  } else if (field === FieldName.lastName){
-    message = 'Last name';
-    minLength = MIN_LENGTH_LAST_NAME;
-  }
-  return { message, minLength, regex };
-
-}

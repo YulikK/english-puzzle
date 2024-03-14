@@ -39,7 +39,7 @@
   padding: 15px;
   width: 100%;
   height: auto;
-
+  gap: 15px
 }
 
 .linksWrapper {
@@ -78,4 +78,8 @@
   align-items: center;
   border-radius: 20px;
   background: linear-gradient(90.00deg, rgba(160, 220, 247, 0.2) 1.527%,rgba(250, 158, 201, 0.2) 49.618%,rgba(245, 168, 78, 0.2) 100%);
+}
+
+.puzzleGameContainer{
+  display: flex;
 }

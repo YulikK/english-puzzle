@@ -1,4 +1,4 @@
-import { BaseComponent } from '../base-components';
+import { BaseComponent } from '../base-components.ts';
 
 import styles from './button.module.scss';
 
@@ -8,13 +8,14 @@ interface Props {
   className?: string;
 }
 
-export const Button = ({textContent, onClick, className }: Props) =>
+const Button = ({textContent, onClick, className }: Props):BaseComponent  =>
   new BaseComponent({
     tag: 'button',
     className: `${styles.button} ${className || ''}`,
     textContent,
-    onclick: (PreventDefault: Event) => {
+    onclick: (PreventDefault: Event): void => {
       PreventDefault.preventDefault();
       onClick?.();
     },
   });
+export default Button;

@@ -1,6 +1,5 @@
-import Store from "../API/store";
-import { OptionsType } from "../utils/types";
-import { HintName } from "../utils/types";
+import type Store from "../API/store.ts";
+import type { OptionsType , HintName } from "../utils/types.ts";
 
 export default class Options {
   public items: OptionsType = {
@@ -8,6 +7,7 @@ export default class Options {
     onTranslate: true,
     onPicture: true
   }
+
   private store: Store;
 
   constructor(store: Store) {
@@ -21,16 +21,15 @@ export default class Options {
   }
 
   public setOption(option: HintName, value: boolean): void {
-    console.log(option, value);
     this.items[option] = value;
     this.store.setOptions(this.items);
   }
   
-  public getFullOptions() {
+  public getFullOptions(): OptionsType {
     return this.items;
   }
 
-  getOptions(option: HintName): boolean {
+  public getOptions(option: HintName): boolean {
     return this.items[option];
   }
 

@@ -1,15 +1,18 @@
-import { BaseComponent } from "@/app/components/base-components";
-import { div, h2, p } from "@/app/components/tags";
-import { Button } from "@/app/components/button/button";
-import { Header } from "@/app/components/header/header";
+import { BaseComponent } from "@/app/components/base-components.ts";
+import { div, h2, p } from "@/app/components/tags.ts";
+import Button from "@/app/components/button/button.ts";
+import Header from "@/app/components/header/header.ts";
+import type User from "@/app/Entities/user.ts";
+import { WELCOME_DESCRIPTION } from "../../../../constant.ts";
 import classes from "./welcome.module.scss";
-import { WELCOME_DESCRIPTION } from "../../../../constant";
-import User from "@/app/Entities/user";
 
-export class Welcome extends BaseComponent {
+export default class Welcome extends BaseComponent {
   public startBtn: BaseComponent;
+
   private modal: BaseComponent;
+
   private header: BaseComponent;
+
   private startCallback: () => void;
 
   constructor(user: User, logoutCallback: () => void, startCallback: () => void) {

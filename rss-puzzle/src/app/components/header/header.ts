@@ -1,10 +1,12 @@
-import { BaseComponent } from "@/app/components/base-components";
-import { div, h1, p, img, a } from "@/app/components/tags";
+import { BaseComponent } from "@/app/components/base-components.ts";
+import { div, h1, p, img, a } from "@/app/components/tags.ts";
 import classes from "./header.module.scss";
 
-export class Header extends BaseComponent {
+export default class Header extends BaseComponent {
   public logoutBtn: BaseComponent;
+
   private header: BaseComponent;
+
   private logoutCallback: () => void;
 
   constructor(logoutCallback: () => void) {

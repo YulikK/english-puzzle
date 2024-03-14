@@ -1,8 +1,8 @@
-import { BaseComponent } from '../base-components';
-import { validateField } from "@/app/utils/validation";
-import { p } from "@/app/components/tags";
+import validateField from "@/app/utils/validation.ts";
+import { p } from "@/app/components/tags.ts";
+import type { FieldName } from '@/app/utils/types.ts';
+import { BaseComponent } from '../base-components.ts';
 import classes from './input.module.scss';
-import { FieldName } from '@/app/utils/types';
 
 interface Props {
   tag?: string;
@@ -13,9 +13,11 @@ interface Props {
   errorContainer: BaseComponent;
 }
 
-export class Input extends BaseComponent{
+export default class Input extends BaseComponent{
   private errorContainer: BaseComponent;
+
   private id: FieldName;
+
   constructor({ id, type, placeholder, className, errorContainer }: Props) {
     super({ tag: 'input', id, type, placeholder, className: `${classes.input} ${className || ''}` }) 
     this.id = id;

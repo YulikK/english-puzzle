@@ -1,8 +1,12 @@
-import Store from "../API/store";
+import type Store from "../API/store.ts";
+
 export default class User {
-  public firstName: string = '';
-  public lastName: string = '';
+  public firstName = '';
+
+  public lastName = '';
+
   private store: Store;
+
   constructor(store: Store) {
     this.store = store;
     const savedUser = this.store.getUser();
@@ -10,7 +14,8 @@ export default class User {
       this.setName(savedUser.firstName, savedUser.lastName, false);
     }
   }
-  public setName(firstName: string, lastName: string, toStore: boolean = true): void {
+
+  public setName(firstName: string, lastName: string, toStore = true): void {
     this.firstName = firstName;
     this.lastName = lastName;
     if (toStore) {
@@ -18,7 +23,7 @@ export default class User {
     }
   }
   
-  public getFullName() {
+  public getFullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }
   

@@ -13,10 +13,11 @@ export type ElementProps<T extends HTMLElement = HTMLElement> = Omit<Props<T>, '
 
 export class BaseComponent<T extends HTMLElement = HTMLElement> {
   protected element: T;
+
   protected child: BaseComponent[] = [];
 
   constructor(props: Props<T>, ...child: BaseComponent[]) {
-    this.element = <T>document.createElement(props.tag);
+    this.element = document.createElement(props.tag) as T;
     Object.assign(this.element, props);
     if (child) {
       this.appendChild(child);
@@ -34,8 +35,12 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     });
   }
 
-  public getElement() {
+  public getElement(): HTMLElement {
     return this.element;
+  }
+
+  public getChildren(): BaseComponent[] {
+    return this.child;
   }
 
   public destroy(): void {
@@ -49,6 +54,10 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
 
   public destroyChild(): void {
     this.child.forEach(child => child.destroy());
+    this.child = [];
+  }
+
+  public clearChild(): void {
     this.child = [];
   }
 

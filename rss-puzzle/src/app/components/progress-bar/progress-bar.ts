@@ -1,11 +1,14 @@
-import { BaseComponent } from "@/app/components/base-components";
+import { BaseComponent } from "@/app/components/base-components.ts";
+import { div, p } from "@/app/components/tags.ts";
 import classes from "./progress-bar.module.scss";
-import { div, p } from "@/app/components/tags";
 
-export class ProgressBar extends BaseComponent {
+export default class ProgressBar extends BaseComponent {
   private progressLine: BaseComponent;
+
   private level: BaseComponent;
+
   private round: BaseComponent;
+
   constructor() {
     super({ tag: 'div', className: classes.progressWrapper }); 
     this.level = p(classes.level!, 'Lvl 1');
