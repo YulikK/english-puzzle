@@ -24,6 +24,7 @@ export default class StartPage extends BaseComponent {
     this.startGameCallback = startGameCallback;
     this.logoutCallback = logoutCallback;
     this.user = user;
+
     
     if (!this.user.isEmpty()) {
       this.showWelcome();

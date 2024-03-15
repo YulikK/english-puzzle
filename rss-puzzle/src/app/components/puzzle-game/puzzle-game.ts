@@ -1,8 +1,9 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
+import type Lessons from "@/app/model/lessons.ts";
 import classes from "./puzzle-game.module.scss";
 import { div, span } from "../tags.ts";
 import Button from "../button/button.ts";
-
+import { URL } from "@/constant.ts";
 export default class PuzzleGame extends BaseComponent {
   private container: BaseComponent;
 
@@ -36,20 +37,22 @@ export default class PuzzleGame extends BaseComponent {
 
   private isWin = false;
 
+  private isLessonEnd = false;
+
   private dragging: BaseComponent | null = null;
 
   private image: HTMLImageElement;
 
-  private roundText: string[] = [];
+  private lessons: Lessons;
 
-  private level: string[];
+  private sentence: string[] = [];
 
-  private currentLevel = 0;
 
-  constructor(container: BaseComponent, backgroundOption: boolean) {
+  constructor(container: BaseComponent, backgroundOption: boolean, lessons: Lessons) {
     super({ tag: 'div', className: classes.gameWrapper }); 
 
     this.container = container;
+    this.lessons = lessons;
     this.backgroundOption = backgroundOption;
     this.wrap = {
       picture: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'picture'}),
@@ -67,33 +70,16 @@ export default class PuzzleGame extends BaseComponent {
       div({className: classes.separator}),
       this.wrap.puzzle,
     this.wrap.buttons]);
-    
-    
-    
+
     this.image = new Image();
-    this.level = ['The students agree they have too much homework',
-      'They arrived at school at 7 a.m',
-      "Is your birthday in August?",
-      "There is a small boat on the lake",
-      "I ate eggs for breakfast",
-      "I brought my camera on my vacation",
-      "The capital of the United States is Washington, D.C",
-      "Did you catch the ball during the baseball game?",
-      "People feed ducks at the lake",
-      "The woman enjoys riding her bicycle"
-    ];
-    if (this.level.length) {
-      const currentRound = this.level[this.currentLevel];
-      if (currentRound) {
-        this.roundText = currentRound.split(' ');
-      }
+
+    const currentLesson = this.lessons.getCurrentLesson();
+    if (currentLesson) {
+      this.image.onload = this.onLoadImage;
+      this.image.src = `${URL}${currentLesson.levelData.imageSrc}`;
+      this.sentence = this.lessons.getSentence().split(' ');
     }
-    
-    this.image.onload = this.onLoadImage;
-    this.image.src = 'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/images/level1/woodedla.jpg';
-
     this.container.getElement().append(this.element);
-
     
   }
 
@@ -111,22 +97,25 @@ export default class PuzzleGame extends BaseComponent {
   };
 
   private renderRound(): void {
-    if (this.currentLevel > 0) {
+    if (this.lessons.getCountRound() > 0) {
       this.fixLine();
     }
     this.hideCheck();
-    const lineContainerPicture = div({ className: `${classes.pictureLine}` });
-    this.wrap.picture.appendChild([lineContainerPicture]);
-    const line = this.currentLevel;
-    const wordCount = this.roundText.length;
+    const line = this.lessons.getCountRound();
+    const wordCount = this.sentence.length;
 
     const partWidth = this.image.width / wordCount;
     const partHeight = this.image.height / 10;
+
+    const lineContainerPicture = div({ className: `${classes.pictureLine}` });
+    lineContainerPicture.getElement().style.height = `${partHeight}px`;
+    this.wrap.picture.appendChild([lineContainerPicture]);
     
-    const lineContainer = this.wrap.picture.getElement().lastChild;
-    if (lineContainer && lineContainer instanceof HTMLElement) {
-      lineContainer.style.height = `${partHeight}px`;
-    }
+    
+    // const lineContainer = this.wrap.picture.getElement().lastChild;
+    // if (lineContainer && lineContainer instanceof HTMLElement) {
+      
+    // }
     
     for (let word = 0; word < wordCount; word += 1) {
       this.createPuzzle(line, word, partWidth, partHeight);
@@ -153,13 +142,17 @@ export default class PuzzleGame extends BaseComponent {
       blockElement.onclick = null;
       blockElement.draggable = false;
     });
+    
+    this.clearBlocks();
+  }
+
+  private clearBlocks(): void {
     this.emptyBlocks.sources.forEach((block) => {
       block.destroy();
     });
     this.puzzles = [];
     this.emptyBlocks.sources = [];
     this.emptyBlocks.answer = [];
-
   }
 
   private createEmptyBlock(line: number, word: number, partWidth: number, partHeight: number): void {
@@ -184,7 +177,7 @@ export default class PuzzleGame extends BaseComponent {
 
   private createPuzzle(live: number, word: number, partWidth: number, partHeight: number): void {
     const block = div({ id: `bl-${live}-${word}`, className: classes.block, draggable: true, ondragstart: this.dragStart, ondragend: this.dragEnd, onclick: this.onPuzzleClick },
-      span({ className: classes.text, textContent: this.roundText[word] })
+      span({ className: classes.text, textContent: this.sentence[word] })
     );
     const element = block.getElement();
     element.style.backgroundImage = this.backgroundOption ? `url(${this.image.src})` : 'none';
@@ -204,7 +197,6 @@ export default class PuzzleGame extends BaseComponent {
       if (block && this.emptyBlocks.sources[i]) {
         this.emptyBlocks.sources[i]?.appendChild([block]);
       }
-        
     }
     
   }
@@ -306,6 +298,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private dragStart = (event: DragEvent): void => {
+    console.log('dragStart');
     if (this.isMarked) {
       this.hideMark();
     }
@@ -322,6 +315,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private dragEnd = (): void => {
+    console.log('dragEnd');
     if (this.overElement && this.dragging) {
       const overBlock = this.overElement;
       const newContainer = this.getOverContainer(overBlock);
@@ -348,6 +342,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private onDragOver = (event: DragEvent): void => {
+    console.log('onDragOver');
     event.preventDefault();
     if (event.target && event.target instanceof HTMLElement) {
       const {target} = event;
@@ -359,6 +354,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private onDragLeave = (): void => {
+    console.log('onDragLeave');
     if (this.overElement) {
       this.overElement.classList.remove(classes.choose!);
       this.overElement = null;
@@ -386,44 +382,63 @@ export default class PuzzleGame extends BaseComponent {
     this.submitButton.addClass(classes.hide!);
   }
 
-  private onSubmit = (): void => {
-    if (!this.isWin) {
-      let isWin = true;
-      this.isMarked = true;
-      this.emptyBlocks.answer.forEach((block, index) => {
-        const childBlock = block.getElement().firstChild;
-        if (childBlock && childBlock instanceof HTMLElement) {
-          const idStr = childBlock.id.split('-')[2];
-          const id = idStr ? parseInt(idStr, 10) : null;
-          if (index !== id) {
-            isWin = false;
-            block.addClass(classes.error!);
-          } else {
-            block.addClass(classes.success!);
-          }
+  private markAnswer(): void {
+    let isWin = true;
+    this.isMarked = true;
+
+    this.emptyBlocks.answer.forEach((block, index) => {
+      const childBlock = block.getElement().firstChild;
+      if (childBlock && childBlock instanceof HTMLElement) {
+        const idStr = childBlock.id.split('-')[2];
+        const id = idStr ? parseInt(idStr, 10) : null;
+        if (index !== id) {
+          isWin = false;
+          block.addClass(classes.error!);
+        } else {
+          block.addClass(classes.success!);
         }
-      });
-      if (isWin) {
-        this.submitButton.getElement().textContent = 'Continue';
       }
-      this.isWin = isWin;
+    });
+    this.isWin = isWin;
+  }
+  private onSubmit = (): void => {
+    if (this.isLessonEnd) {
+      this.fixLine();
+      this.lessons.setNextLevel();
+      this.sentence = this.lessons.getSentence().split(' ');
+      this.image.src = `${URL}${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
+      
+      this.wrap.picture.getElement().style.width = `${this.image.width}px`;
+      this.submitButton.getElement().textContent = 'Check';
+      this.wrap.picture.destroyChild();
+      this.wrap.picture.clear();
+      this.wrap.picture.clearChild();
+      
+      this.isLessonEnd = false;
+      this.isWin = false;
+      // this.renderRound();
     } else {
-      this.hideMark();
-      this.currentLevel += 1;
-      if (this.currentLevel < this.level.length) {
-        if (this.level.length) {
-          const currentRound = this.level[this.currentLevel];
-          if (currentRound) {
-            this.roundText = currentRound.split(' ');
-          }
+      if (!this.isWin) {
+        this.markAnswer();
+        if (this.isWin) {
+          this.submitButton.getElement().textContent = 'Continue';
         }
-        this.renderRound();
-        this.submitButton.getElement().textContent = 'Check';
-        this.isWin = false;
       } else {
-        this.submitButton.getElement().textContent = 'You win';
+        this.hideMark();
+        this.lessons.setNextRound();
+        
+        this.sentence = this.lessons.getSentence().split(' ');
+        if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {
+          this.renderRound();
+          this.submitButton.getElement().textContent = 'Check';
+          this.isWin = false;
+        } else {
+          this.submitButton.getElement().textContent = 'Next lesson';
+          this.isLessonEnd = true;
+        }
       }
     }
+    
     
   }
 

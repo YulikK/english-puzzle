@@ -4,5 +4,7 @@ const STORE_VER = `v1`;
 export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 export const STORE_USER = `user`;
 export const STORE_OPTIONS = `options`;
+export const STORE_LAST_LESSON = `last_lesson`;
 export const MIN_LENGTH_FIRST_NAME = 3;
 export const MIN_LENGTH_LAST_NAME = 4;
+export const URL = 'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/images/';

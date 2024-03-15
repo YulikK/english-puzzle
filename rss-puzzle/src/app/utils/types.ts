@@ -14,3 +14,26 @@ export enum FieldName {
   firstName = 'firstName',
   lastName = 'lastName'
 }
+
+export type TittleType = {
+  id: string,
+  name: string,
+  imageSrc: string,
+  cutSrc: string,
+  author: string,
+  year: string
+}
+
+export type RoundType = {
+  audioExample: string,
+  textExample: string,
+  textExampleTranslate: string,
+  id: number,
+  word: string,
+  wordTranslate: string
+}
+
+export type LessonType = {
+  levelData: TittleType,
+  words: RoundType[]
+}

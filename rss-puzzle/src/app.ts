@@ -5,6 +5,8 @@ import Game from './app/pages/game/game.ts';
 import Store from "./app/API/store.ts";
 import User from "./app/Entities/user.ts";
 import Options from './app/Entities/options.ts';
+import mockData from "./app/data/mock.ts";
+import Lessons from "./app/model/lessons.ts";
 
 const {body} = document;
 const store = new Store();
@@ -25,14 +27,15 @@ function logout(): void {
   clearContainer();
 }
 
-const gamePage = new Game(body, options, logout);
+const dataModel = new Lessons(mockData, store);
+const gamePage = new Game(body, options, logout, dataModel);
 
 function startGame(): void {
   clearContainer();
   gamePage.showGame();
 }
 
-const startPage = new StartPage(body, user, startGame, logout);
+new StartPage(body, user, startGame, logout);
 
 
 

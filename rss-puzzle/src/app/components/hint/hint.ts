@@ -2,6 +2,7 @@ import { BaseComponent } from "@/app/components/base-components.ts";
 import { a, img, p } from "@/app/components/tags.ts";
 import type Options from "@/app/Entities/options.ts";
 import { HintName } from "@/app/utils/types.ts";
+import type Lessons from "@/app/model/lessons.ts";
 import Checkbox from "../checkbox/checkbox.ts";
 import classes from "./hint.module.scss";
 
@@ -19,13 +20,16 @@ export default class Hint extends BaseComponent {
 
   private hintTranslate: BaseComponent;
 
+  private lessons: Lessons;
+
   private onChangePictureOption: Callback| null = null;
 
 
-  constructor(options: Options) {
+  constructor(options: Options, lessons: Lessons) {
     super({ tag: 'div', className: classes.hintContainer }); 
 
     this.options = options;
+    this.lessons = lessons;
 
     this.soundComponent = new Checkbox(HintName.onSound, this.options, this.changeOptionsHandler);
     this.translateComponent = new Checkbox(HintName.onTranslate, this.options, this.changeOptionsHandler);
@@ -34,10 +38,16 @@ export default class Hint extends BaseComponent {
     this.hintSound = a({ className: classes.sound, onclick: this.soundPlay },
       img({ src: 'img/hint-sound.png', alt: 'play sound hint', className: classes.soundImg })
     );
-    this.hintTranslate = p(classes.text!, 'Студенты согласны, что у них слишком много домашней работы');
+    this.hintTranslate = p(classes.text!, '');
+    this.updatesTextTranslate();
     this.updateTranslateHint();
     this.updateSoundHint();
   }
+
+  public updatesTextTranslate(): void {
+    this.hintTranslate.getElement().textContent = this.lessons.getTranslate();
+  }
+
 
   public getOptions(): Checkbox[] {
     return [

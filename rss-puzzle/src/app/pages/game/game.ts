@@ -7,6 +7,7 @@ import Hint from "@/app/components/hint/hint.ts";
 import PuzzleGame from "@/app/components/puzzle-game/puzzle-game.ts";
 import { HintName } from "@/app/utils/types.ts";
 import classes from "./game.module.scss";
+import Lessons from "@/app/model/lessons";
 
 export default class Game extends BaseComponent {
   private container: HTMLElement;
@@ -27,20 +28,23 @@ export default class Game extends BaseComponent {
 
   private puzzleGame: PuzzleGame;
 
-  constructor(container: HTMLElement, options:Options, logoutCallback: () => void) {
+  private lessons: Lessons
+
+  constructor(container: HTMLElement, options:Options, logoutCallback: () => void, lessons: Lessons) {
     super({ tag: 'div', className: classes.gamePage }); 
 
     this.container = container;
     this.options = options;
+    this.lessons = lessons;
     this.header = new Header(logoutCallback);
     this.progressBar = new ProgressBar();
     this.hintOptionsContainer = div({ className: classes.hintOptions });
     this.hintContainer = div({ className: classes.hint });
-    this.hint = new Hint(this.options);
+    this.hint = new Hint(this.options, this.lessons);
     this.hintOptionsContainer.appendChild(this.hint.getOptions());
     this.hintContainer.appendChild(this.hint.getHint());
     this.puzzleGameContainer = div({ className: classes.gameWrapper }, this.hintContainer);
-    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, options.getOptions(HintName.onPicture));
+    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, options.getOptions(HintName.onPicture), this.lessons);
     this.hint.setOnPictureCallback(this.puzzleGame.backgroundToggle);
   }
 
