@@ -17,8 +17,6 @@
   cursor: pointer;
   display: inline-block;
   border-radius: 50%;
-  width: 41px;
-  height: 41px;
   margin: 10px;
 
   &On{
@@ -29,8 +27,8 @@
 }
 
 .soundImg {
-  width: 41px;
-  height: 41px;
+  width: 24px;
+  height: 24px;
 }
 
 .text {
@@ -43,4 +41,34 @@
   letter-spacing: 0px;
   text-align: left;
   margin: 10px;
+}
+
+.hintOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.hint {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  background: linear-gradient(90.00deg, rgba(160, 220, 247, 0.2) 1.527%,rgba(250, 158, 201, 0.2) 49.618%,rgba(245, 168, 78, 0.2) 100%);
+}
+
+.hintContainer{
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.hintOptionsContainer{
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  margin-right: 1rem;
 }

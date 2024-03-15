@@ -2,6 +2,8 @@ export type Props<T extends HTMLElement = HTMLElement> = Partial<
   Omit<T, 'style' | 'dataset' | 'classList' | 'children' | 'tagName '>
   > & {
   type?: string;
+  width?: number;
+  height?: number;
   htmlFor?: T extends HTMLLabelElement ? string : never;
   checked?: T extends HTMLInputElement ? boolean : never;
   id?: string;

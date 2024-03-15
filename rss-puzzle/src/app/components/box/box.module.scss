@@ -1,0 +1,42 @@
+
+
+.line {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+}
+
+.pictureLine{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.container{
+  min-width: 20px;
+  height: auto;
+  background-color: rgb(204, 228, 254);
+  border-radius: 5px;
+  border: 1px solid #223a57;
+  margin: 0;
+}
+
+.choose{
+  border: 1px dotted #223a57;
+  transition: 0.4s;
+  transform: translate(0px, 10px);
+  
+}
+
+.success {
+  box-shadow: 0px 4px 15px 0px rgba(8, 111, 22, 0.82);
+}
+
+.error {
+  box-shadow: 0px 4px 15px 0px rgba(181, 5, 5, 0.784);
+}

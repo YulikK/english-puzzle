@@ -1,5 +1,5 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
-import { a, img, p } from "@/app/components/tags.ts";
+import { a, img, p, div } from "@/app/components/tags.ts";
 import type Options from "@/app/Entities/options.ts";
 import { HintName } from "@/app/utils/types.ts";
 import type Lessons from "@/app/model/lessons.ts";
@@ -8,6 +8,8 @@ import classes from "./hint.module.scss";
 
 type Callback = (value: boolean) => void;
 export default class Hint extends BaseComponent {
+  private container: BaseComponent;
+
   private options: Options;
 
   private soundComponent: Checkbox;
@@ -25,9 +27,10 @@ export default class Hint extends BaseComponent {
   private onChangePictureOption: Callback| null = null;
 
 
-  constructor(options: Options, lessons: Lessons) {
-    super({ tag: 'div', className: classes.hintContainer }); 
+  constructor(container: BaseComponent, options: Options, lessons: Lessons) {
+    super({ tag: 'div', className: classes.hint }); 
 
+    this.container = container;
     this.options = options;
     this.lessons = lessons;
 
@@ -36,12 +39,24 @@ export default class Hint extends BaseComponent {
     this.pictureComponent = new Checkbox(HintName.onPicture, this.options, this.changeOptionsHandler);
 
     this.hintSound = a({ className: classes.sound, onclick: this.soundPlay },
-      img({ src: 'img/hint-sound.png', alt: 'play sound hint', className: classes.soundImg })
+      img({ src: 'img/hint-sound.png', alt: 'play sound hint', className: classes.soundImg, width: 24, height: 24 })
     );
     this.hintTranslate = p(classes.text!, '');
     this.updatesTextTranslate();
     this.updateTranslateHint();
     this.updateSoundHint();
+
+    this.appendChild([div({ className: classes.hintContainer },
+      this.hintSound,
+      this.hintTranslate
+    ),
+      div({ className: classes.hintOptionsContainer },
+        this.translateComponent,
+        this.pictureComponent,
+        this.soundComponent
+      )
+    ]);
+    this.container.appendChild([this]);
   }
 
   public updatesTextTranslate(): void {

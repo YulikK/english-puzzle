@@ -15,6 +15,11 @@ export enum FieldName {
   lastName = 'lastName'
 }
 
+export type UserType = {
+  firstName: string,
+  lastName: string
+}
+
 export type TittleType = {
   id: string,
   name: string,

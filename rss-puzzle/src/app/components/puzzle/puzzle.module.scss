@@ -1,0 +1,26 @@
+.text {
+  color: rgb(30, 66, 98);
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0px;
+  text-align: left;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+
+}
+
+.block.dragging {
+  opacity: 0.2;
+}
+
+.block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  transition: 0.4s;
+
+}

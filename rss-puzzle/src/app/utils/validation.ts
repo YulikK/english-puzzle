@@ -1,4 +1,5 @@
 import { MIN_LENGTH_LAST_NAME, MIN_LENGTH_FIRST_NAME } from '@/constant.ts';
+import type { UserType, OptionsType } from "./types.ts";
 import { FieldName } from "./types.ts";
 
 type ValidationType = {
@@ -21,7 +22,7 @@ function getValidationConstant(field: FieldName):{message: string, minLength: nu
 
 }
 
-export default function validateField(value: string, field: FieldName): ValidationType {
+export function validateField(value: string, field: FieldName): ValidationType {
   const validation: ValidationType = {
     isValid: false,
     error: '',
@@ -40,3 +41,26 @@ export default function validateField(value: string, field: FieldName): Validati
   return validation;
 }
 
+export function isOptionsType(entity: unknown): entity is OptionsType {
+  return Boolean(
+    typeof entity === 'object' &&
+      entity &&
+      'onSound' in entity &&
+      typeof entity.onSound === 'boolean' &&
+      'onTranslate' in entity &&
+      typeof entity.onTranslate === 'boolean' &&
+      'onPicture' in entity &&
+      typeof entity.onPicture === 'boolean',
+  );
+}
+
+export function isUserType(entity: unknown): entity is UserType {
+  return Boolean(
+    typeof entity === 'object' &&
+      entity &&
+      'firstName' in entity &&
+      typeof entity.firstName === 'string' &&
+      'lastName' in entity &&
+      typeof entity.lastName === 'string'
+  );
+}

@@ -24,8 +24,9 @@ export default class StartPage extends BaseComponent {
     this.startGameCallback = startGameCallback;
     this.logoutCallback = logoutCallback;
     this.user = user;
+  }
 
-    
+  public initApp(): void {
     if (!this.user.isEmpty()) {
       this.showWelcome();
     } else {
@@ -33,11 +34,16 @@ export default class StartPage extends BaseComponent {
     }
   }
 
-  public logout = (): void => {
-    this.clearContainer();
+  private logoutClick = (): void => {
+    
     this.logoutCallback();
+    this.logout();
+  }
+
+  public logout() {
+    this.clearContainer();
     this.showAuth();
-    this.destroyChild();
+    
   }
 
   public login = (): void => {
@@ -56,7 +62,7 @@ export default class StartPage extends BaseComponent {
   }
 
   private showWelcome(): void {
-    this.welcomeComponent = new Welcome(this.user, this.logout, this.startGameCallback);
+    this.welcomeComponent = new Welcome(this.user, this.logoutClick, this.startGameCallback);
     this.appendChild([this.welcomeComponent]);
     this.container.append(this.element);
   }

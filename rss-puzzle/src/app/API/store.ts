@@ -1,6 +1,7 @@
 import { STORE_NAME, STORE_USER, STORE_OPTIONS, STORE_LAST_LESSON } from "@/constant.ts";
 import type User from "../Entities/user.ts";
-import type { OptionsType } from "../utils/types.ts";
+import { isUserType, isOptionsType } from "../utils/validation.ts";
+import type { UserType , OptionsType } from "../utils/types.ts";
 
 export default class Store {
   private storage;
@@ -12,16 +13,28 @@ export default class Store {
     this.storeKey = STORE_NAME;
   }
 
-  public getUser(): User | null{
-    return this.get<User>(STORE_USER);
+  public getUser(): UserType | null{
+    const data = this.get(STORE_USER);
+    if (isUserType(data)) {
+      return data;
+    }
+    return null
   }
 
   public setUser(user: User): void{
-    this.set<User>(STORE_USER, user);
+    const data: UserType = {
+      firstName: user.firstName,
+      lastName: user.lastName
+    }
+    this.set<UserType>(STORE_USER, data);
   }
 
   public getOptions(): OptionsType | null {
-    return this.get<OptionsType>(STORE_OPTIONS);
+    const data = this.get(STORE_OPTIONS);
+    if (isOptionsType(data)) {
+      return data;
+    }
+    return null
   }
 
   public setOptions(options: OptionsType): void {
@@ -29,7 +42,11 @@ export default class Store {
   }
 
   public getLastLesson(): string | null {
-    return this.get<string>(STORE_LAST_LESSON);
+    const data = this.get(STORE_LAST_LESSON);
+    if (typeof data === "string") {
+      return data;
+    }
+    return null
   }
 
   public setLastLesson(value: string): void {
@@ -39,6 +56,7 @@ export default class Store {
   public removeUser(): void {
     this.storage.removeItem(`${this.storeKey}-${STORE_USER}`);
     this.storage.removeItem(`${this.storeKey}-${STORE_OPTIONS}`);
+    this.storage.removeItem(`${this.storeKey}-${STORE_LAST_LESSON}`);
   }
 
   private set<T>(key: string, value: T): void {
@@ -48,14 +66,13 @@ export default class Store {
     );
   }
 
-  private get<T>(key: string): T | null {
+  private get(key: string): unknown{
     try {
       const storedDataString = this.storage.getItem(
         `${this.storeKey}-${key}`,
       );
       if (storedDataString) {
-        const resultsData = JSON.parse(storedDataString) as T;
-        return resultsData;
+        return JSON.parse(storedDataString);
       }
       return null;
     } catch (err: unknown) {
@@ -63,5 +80,6 @@ export default class Store {
     }
   }
 
+  
   
 }

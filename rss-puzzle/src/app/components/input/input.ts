@@ -1,4 +1,4 @@
-import validateField from "@/app/utils/validation.ts";
+import {validateField} from "@/app/utils/validation.ts";
 import { p } from "@/app/components/tags.ts";
 import type { FieldName } from '@/app/utils/types.ts';
 import { BaseComponent } from '../base-components.ts';

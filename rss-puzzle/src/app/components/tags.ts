@@ -13,19 +13,18 @@ export const h2 = (className: string, textContent: string): BaseComponent<HTMLEl
 export const p = (className: string, textContent: string): BaseComponent<HTMLElementTagNameMap['h1']> =>
   new BaseComponent({ tag: 'p', className, textContent });
 
-export const img = ({ src = '', alt = '', className = '' }): BaseComponent<HTMLElementTagNameMap['img']> =>
+export const img = ({ src = '', alt = '', className = '', width = 0, height = 0 }): BaseComponent<HTMLElementTagNameMap['img']> =>
   new BaseComponent<HTMLElementTagNameMap['img']>({
     tag: 'img',
     className,
     src,
     alt,
+    width,
+    height
   });
 
 export const a = (props: ElementProps<HTMLLinkElement>, ...children: BaseComponent[]): BaseComponent<HTMLLinkElement> =>
   new BaseComponent<HTMLLinkElement>({ ...props, tag: 'a' }, ...children);
-
-export const aside = (props: ElementProps<HTMLElement>, ...children: BaseComponent[]): BaseComponent<HTMLElement> =>
-  new BaseComponent<HTMLElement>({ ...props, tag: 'aside' }, ...children);
 
 export const label = (props: ElementProps, ...children: BaseComponent[]): BaseComponent =>
   new BaseComponent({ ...props, tag: 'label' }, ...children);

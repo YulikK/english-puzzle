@@ -5,6 +5,9 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  padding: 3%;
+  border-radius: 40px;
+  background: linear-gradient(90deg, rgba(160, 220, 247, 0.2) 1.527%, rgba(250, 158, 201, 0.2) 49.618%, rgba(245, 168, 78, 0.2) 100%);
 }
 
 .puzzleContainer{
@@ -15,91 +18,14 @@
   height: auto;
 }
 
-.line {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  
-}
-
-.pictureLine{
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-}
 .separator{
   width: 80%;
   border-top: 1px solid #223a57;
   margin: 20px 0;
-
-}
-.text {
-  color: rgb(30, 66, 98);
-  font-family: "Josefin Sans", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21px;
-  letter-spacing: 0px;
-  text-align: left;
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.7);
-
 }
 
 .picture {
   padding: 15px;
-}
-
-.block.dragging {
-  opacity: 0.2;
-}
-
-.container{
-  min-width: 20px;
-  height: auto;
-  background-color: rgb(204, 228, 254);
-  border-radius: 5px;
-}
-
-.container:not(:last-child):not(:first-child):not(:has(.block)){
-  margin-right: 3px;
-  margin-left: 3px;
-}
-.container:last-child {
-  margin-right: 0;
-  margin-left: 3px;
-}
-.container:first-child {
-  margin-right: 3px;
-  margin-left: 0;
-}
-
-.container:has(.block) {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-.choose{
-  border: 1px dotted #223a57;
-  .block{
-    transition: 0.4s;
-    transform: translate(10px, 10px);
-  }
-  
-}
-
-.block {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  transition: 0.4s;
-
 }
 
 .buttonsContainer{
@@ -114,11 +40,3 @@
   @include visually-hidden;
 }
 
-.success {
-
-  box-shadow: 0px 4px 15px 0px rgba(8, 111, 22, 0.82);
-}
-
-.error {
-  box-shadow: 0px 4px 15px 0px rgba(181, 5, 5, 0.784);
-}

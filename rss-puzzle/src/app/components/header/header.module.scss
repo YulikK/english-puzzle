@@ -3,12 +3,17 @@
 
 .header {
   background: #223a57;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 4px 4px 15px 0px rgba(0, 0, 0, 0.25);
 }
 
 .wrapper {
   display: flex;
   justify-content: space-between;
-  margin: 0px 30px;
+  margin: 0 2%;
+  gap: 2%;
 }
 
 .logoWrapper {
@@ -20,8 +25,46 @@
 .logoutWrapper{
   display: flex;
   align-items: center;
+  flex-grow: 1;
+  justify-content: end;
   gap: 14px;
 }
+
+.linksWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 5px;
+}
+
+.link {
+  cursor: pointer;
+  display: flex;
+  align-items: end;
+  gap: 5px;
+}
+.linkText {
+  color: #f7f8fc;
+  text-decoration: none;
+  font-family: $font-stack;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0px;
+  text-align: left;
+  width: 90px;
+}
+
+.logoGit {
+  width: 24px;
+  height: 24px;
+}
+
+.logoRs{
+  width: 24px;
+  height: 22px;
+}
+
 
 .logoutLink {
   display: flex;
@@ -57,9 +100,8 @@
 .tittle {
   color: #f7f8fc;
   font-family: $font-stack;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  // line-height: 28px;
   letter-spacing: 0px;
   text-align: left;
   width: 90px;
@@ -71,7 +113,6 @@
   font-family: $font-stack;
   font-size: 18px;
   font-weight: 400;
-  // line-height: 28px;
   letter-spacing: 0px;
   text-align: left;
   transition: 0.4s;

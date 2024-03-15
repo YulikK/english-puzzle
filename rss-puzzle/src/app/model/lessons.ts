@@ -6,7 +6,7 @@ export default class Lessons {
 
   private currentLesson: LessonType | null = null;
 
-  private countRound: number = 0;
+  private countRound = 0;
 
   private store: Store;
 
@@ -33,6 +33,11 @@ export default class Lessons {
       return this.currentLesson.words[this.countRound]?.textExampleTranslate || '';
     }
     return '';
+  }
+
+  public resetProgress(): void {
+    this.currentLesson = this.getFirstLesson();
+    this.countRound = 0;
   }
 
   public getCountRound(): number {

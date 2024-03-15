@@ -12,6 +12,7 @@ const {body} = document;
 const store = new Store();
 const user = new User(store);
 const options = new Options(store)
+const dataModel = new Lessons(mockData, store);
 
 function clearContainer(): void {
   body.innerHTML = '';
@@ -19,24 +20,24 @@ function clearContainer(): void {
 
 function clearUser(): void {
   store.removeUser();
+  dataModel.resetProgress();
   user.clear();
 }
 
 function logout(): void {
   clearUser();
   clearContainer();
+  startPage.logout();
 }
-
-const dataModel = new Lessons(mockData, store);
-const gamePage = new Game(body, options, logout, dataModel);
 
 function startGame(): void {
   clearContainer();
+  const gamePage = new Game(body, options, logout, dataModel);
   gamePage.showGame();
 }
 
-new StartPage(body, user, startGame, logout);
-
+const startPage = new StartPage(body, user, startGame, logout);
+startPage.initApp();
 
 
 
