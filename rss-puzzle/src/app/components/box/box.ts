@@ -110,9 +110,17 @@ export default class Box {
       const formContainer = findPuzzleContainer(startArea, puzzle);
       const toContainer = this.findContainer(this.overElement);
       if (formContainer && toContainer) {
+        const puzzleForSwap = toContainer.getElement().firstChild;
+        if (puzzleForSwap && puzzleForSwap instanceof HTMLElement) {
+          toContainer.clearChild();
+          formContainer.clearChild();
+          toContainer.append(puzzle);
+          formContainer.getElement().append(puzzleForSwap);
+        } else {
+          formContainer.clearChild();
+          toContainer.append(puzzle);
+        }
         this.overElement = null;
-        formContainer.clearChild();
-        toContainer.append(puzzle);
       }
     }
     this.setDefaultStyles();
