@@ -5,7 +5,6 @@ import ProgressBar from "@/app/components/progress-bar/progress-bar.ts";
 import type Options from "@/app/Entities/options.ts";
 import Hint from "@/app/components/hint/hint.ts";
 import PuzzleGame from "@/app/components/puzzle-game/puzzle-game.ts";
-import { HintName } from "@/app/utils/types.ts";
 import type Lessons from "@/app/model/lessons";
 import classes from "./game.module.scss";
 
@@ -43,7 +42,7 @@ export default class Game extends BaseComponent {
     this.progressBar = new ProgressBar(this.progressBarContainer);
     this.puzzleGameContainer.append(div({className: classes.wrap}, this.progressBarContainer, this.hintContainer));
     this.hint = new Hint(this.hintContainer, this.options, this.lessons);
-    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, options.getOptions(HintName.onPicture), this.lessons);
+    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.lessons);
     this.hint.setOnPictureCallback(this.puzzleGame.backgroundToggle);
   }
 

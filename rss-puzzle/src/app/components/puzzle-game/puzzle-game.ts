@@ -5,6 +5,8 @@ import { div} from "../tags.ts";
 import Box from "../box/box.ts";
 import Puzzle from "../puzzle/puzzle.ts";
 import Button from "../button/button.ts";
+import Hint from "../hint/hint.ts";
+import { HintName } from "@/app/utils/types.ts";
 import classes from "./puzzle-game.module.scss";
 
 export default class PuzzleGame extends BaseComponent {
@@ -25,8 +27,6 @@ export default class PuzzleGame extends BaseComponent {
     [key: string]: BaseComponent;
   };
 
-  private backgroundOption = true;
-
   private isMarked = false;
 
   private isWin = false;
@@ -37,14 +37,18 @@ export default class PuzzleGame extends BaseComponent {
 
   private lessons: Lessons;
 
+  private hint: Hint;
+
   private sentence: string[] = [];
 
-  constructor(container: BaseComponent, backgroundOption: boolean, lessons: Lessons) {
+  constructor(container: BaseComponent,
+    hint: Hint,
+    lessons: Lessons) {
     super({ tag: 'div', className: classes.gameWrapper }); 
 
     this.container = container;
     this.lessons = lessons;
-    this.backgroundOption = backgroundOption;
+    this.hint = hint;
     this.wrap = {
       picture: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'picture'}),
       puzzle: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'puzzle' }),
@@ -64,7 +68,7 @@ export default class PuzzleGame extends BaseComponent {
 
     this.image = new Image();
     this.puzzle = new Puzzle(this.image,
-      this.backgroundOption,
+      this.hint.options.getOptions(HintName.onPicture),
       this.puzzleClickCallback,
       this.dragStartCallback,
       this.dragEndCallback);
@@ -72,7 +76,7 @@ export default class PuzzleGame extends BaseComponent {
     const currentLesson = this.lessons.getCurrentLesson();
     if (currentLesson) {
       this.image.onload = this.onLoadImage;
-      this.image.src = `${URL}${currentLesson.levelData.imageSrc}`;
+      this.image.src = `${URL}images/${currentLesson.levelData.imageSrc}`;
       this.sentence = this.lessons.getSentence().split(' ');
     }
     this.container.getElement().append(this.element);
@@ -85,6 +89,8 @@ export default class PuzzleGame extends BaseComponent {
 
   private onLoadImage = (): void => {
     this.getElement().style.width = `${this.image.width}px`;
+    this.hint.updatePlayFile();
+    this.hint.updatesTextTranslate();
     this.renderRound();
   };
 
@@ -168,7 +174,7 @@ export default class PuzzleGame extends BaseComponent {
       this.fixLine();
       this.lessons.setNextLevel();
       this.sentence = this.lessons.getSentence().split(' ');
-      this.image.src = `${URL}${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
+      this.image.src = `${URL}images/${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
       
       
       this.submitButton.getElement().textContent = 'Check';
@@ -186,6 +192,8 @@ export default class PuzzleGame extends BaseComponent {
       } else {
         this.hideMark();
         this.lessons.setNextRound();
+        this.hint.updatePlayFile();
+        this.hint.updatesTextTranslate();
         
         this.sentence = this.lessons.getSentence().split(' ');
         if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {

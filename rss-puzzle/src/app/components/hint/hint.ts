@@ -4,13 +4,14 @@ import type Options from "@/app/Entities/options.ts";
 import { HintName } from "@/app/utils/types.ts";
 import type Lessons from "@/app/model/lessons.ts";
 import Checkbox from "../checkbox/checkbox.ts";
+import Play from "../play/play.ts";
 import classes from "./hint.module.scss";
 
 type Callback = (value: boolean) => void;
 export default class Hint extends BaseComponent {
   private container: BaseComponent;
 
-  private options: Options;
+  public options: Options;
 
   private soundComponent: Checkbox;
 
@@ -18,7 +19,7 @@ export default class Hint extends BaseComponent {
 
   private pictureComponent: Checkbox;
 
-  private hintSound: BaseComponent;
+  private hintSound: Play;
 
   private hintTranslate: BaseComponent;
 
@@ -38,11 +39,10 @@ export default class Hint extends BaseComponent {
     this.translateComponent = new Checkbox(HintName.onTranslate, this.options, this.changeOptionsHandler);
     this.pictureComponent = new Checkbox(HintName.onPicture, this.options, this.changeOptionsHandler);
 
-    this.hintSound = a({ className: classes.sound, onclick: this.soundPlay },
-      img({ src: 'img/hint-sound.png', alt: 'play sound hint', className: classes.soundImg, width: 24, height: 24 })
-    );
+    this.hintSound = new Play();
     this.hintTranslate = p(classes.text!, '');
     this.updatesTextTranslate();
+    this.updatePlayFile();
     this.updateTranslateHint();
     this.updateSoundHint();
 
@@ -63,6 +63,9 @@ export default class Hint extends BaseComponent {
     this.hintTranslate.getElement().textContent = this.lessons.getTranslate();
   }
 
+  public updatePlayFile(): void {
+    this.hintSound.setFile(this.lessons.getAudioFile());
+  }
 
   public getOptions(): Checkbox[] {
     return [

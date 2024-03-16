@@ -30,7 +30,15 @@ export default class Lessons {
 
   public getTranslate(): string {
     if (this.currentLesson) {
+      console.log(this.currentLesson.words[this.countRound]?.textExampleTranslate)
       return this.currentLesson.words[this.countRound]?.textExampleTranslate || '';
+    }
+    return '';
+  }
+
+  public getAudioFile(): string {
+    if (this.currentLesson) {
+      return this.currentLesson.words[this.countRound]?.audioExample || '';
     }
     return '';
   }

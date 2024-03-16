@@ -1,0 +1,19 @@
+@import 'src/scss/constant.scss';
+.sound{
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 50%;
+  margin: 10px;
+  width: 24px;
+  height: 24px;
+
+  &On{
+    background: conic-gradient(from 0deg at 100%, #b5d6f5 0%, #fa9ec9 33%, #ffa972 66%, #b5d6f5 100%);
+    animation: rotateAnimation 2s linear infinite;
+    background-size: 30% 100%;
+  }
+}
+.soundImg {
+  width: 24px;
+  height: 24px;
+}
