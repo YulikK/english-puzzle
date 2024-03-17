@@ -1,0 +1,91 @@
+@import 'src/scss/utils.scss';
+
+.statistic {
+  width: 80%;
+  max-height: 80%;
+  border-radius: 40px;
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(89.43deg, rgb(245, 168, 78) 0.324%,rgb(246, 69, 141) 99.708%);
+  margin-top: -5%;
+}
+
+.pictureWrap{
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  background: rgba(245, 168, 78, 0.34);
+  margin: 2% 10%;
+}
+
+.text {
+  color: rgb(52, 83, 121);
+  font-family: $font-stack;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+  margin: 0;
+}
+
+.author {
+  color: rgb(231, 238, 245);
+  font-family: $font-stack;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin: 0;
+}
+
+.infoWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px;
+}
+
+.resultWrap{
+  border-radius: 0px 0px 40px 40px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.wrap{
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.tittleWrap {
+  display: flex
+}
+
+.count{
+  color: rgb(247, 248, 252);
+  font-family: $font-stack;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0.4em 0.7em;
+  margin: 0 10px;
+}
+
+.sentence{
+  display: flex;
+  align-items: center;
+}
+
+.miss {
+  background: linear-gradient(90.00deg, rgb(255, 169, 114) 2.29%,rgb(246, 69, 141) 100%);
+}
+
+.done{
+  background: linear-gradient(90.00deg, rgb(160, 220, 247) 2.29%,rgb(111, 187, 215) 100%);
+}
+
+.continue{
+  background: linear-gradient(90.00deg, rgb(255, 169, 114) 2.29%,rgb(246, 69, 141) 100%);
+  align-self: center;
+}

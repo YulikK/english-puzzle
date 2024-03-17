@@ -1,5 +1,11 @@
 @import 'src/scss/colors.scss';
 @import 'src/scss/constant.scss';
+@import 'src/scss/utils.scss';
+
+.hide {
+  @include visually-hidden;
+}
+
 .progressWrapper{
   display: flex;
   align-items: center;

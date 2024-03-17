@@ -1,12 +1,15 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import type Lessons from "@/app/model/lessons.ts";
 import { URL } from "@/constant.ts";
+import type { RoundType } from "@/app/utils/types.ts";
+import { HintName } from "@/app/utils/types.ts";
 import { div, span} from "../tags.ts";
 import Box from "../box/box.ts";
 import Puzzle from "../puzzle/puzzle.ts";
 import Button from "../button/button.ts";
-import Hint from "../hint/hint.ts";
-import { HintName } from "@/app/utils/types.ts";
+import type Hint from "../hint/hint.ts";
+import type ProgressBar from "../progress-bar/progress-bar.ts";
+import Statistic from "../modal/statistic/statistic.ts";
 import classes from "./puzzle-game.module.scss";
 
 export default class PuzzleGame extends BaseComponent {
@@ -14,9 +17,15 @@ export default class PuzzleGame extends BaseComponent {
 
   private puzzle: Puzzle;
 
+  private progressBar: ProgressBar;
+
   private submitButton: BaseComponent;
 
   private showAnswerButton: BaseComponent;
+
+  private showStatisticButton: BaseComponent;
+
+  private missRounds: RoundType[] = []
 
   private box: Box;
 
@@ -44,12 +53,14 @@ export default class PuzzleGame extends BaseComponent {
 
   constructor(container: BaseComponent,
     hint: Hint,
+    progressBar: ProgressBar,
     lessons: Lessons) {
-    super({ tag: 'div', className: classes.gameWrapper }); 
+    super({ tag: 'div', className: `${classes.gameWrapper} ${classes.game}` }); 
 
     this.container = container;
     this.lessons = lessons;
     this.hint = hint;
+    this.progressBar = progressBar;
     this.wrap = {
       picture: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'picture'}),
       puzzle: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'puzzle' }),
@@ -60,8 +71,9 @@ export default class PuzzleGame extends BaseComponent {
     
     this.submitButton = Button({textContent: 'Check', onClick: this.onSubmit, className: classes.hide});
     this.showAnswerButton = Button({ textContent: 'Show answer', onClick: this.showAnswer });
+    this.showStatisticButton = Button({ textContent: 'Statistic', onClick: this.showStatistic, className: classes.hide });
     
-    this.wrap.buttons.appendChild([this.showAnswerButton, this.submitButton]);
+    this.wrap.buttons.appendChild([this.showAnswerButton, this.showStatisticButton, this.submitButton]);
 
     this.appendChild([this.wrap.picture,
       this.wrap.separator,
@@ -199,6 +211,7 @@ export default class PuzzleGame extends BaseComponent {
   private checkAnswer(): void {
     this.markAnswer();
     if (this.isWin) {
+      this.showAnswerButton.addClass(classes.hide!);
       this.submitButton.getElement().textContent = 'Continue';
     }
   }
@@ -209,6 +222,7 @@ export default class PuzzleGame extends BaseComponent {
     this.lessons.setNextRound();
     this.hint.updatePlayFile();
     this.hint.updatesTextTranslate();
+    this.showAnswerButton.removeClass(classes.hide!);
     
     this.sentence = this.lessons.getSentence().split(' ');
     if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {
@@ -218,6 +232,7 @@ export default class PuzzleGame extends BaseComponent {
     } else {
       this.showPictureInformation();
       this.submitButton.getElement().textContent = 'Next lesson';
+      this.showStatisticButton.removeClass(classes.hide!);
       this.showAnswerButton.addClass(classes.hide!);
       this.isLessonEnd = true;
     }
@@ -243,9 +258,37 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private showAnswer = (): void => {
+    this.showAnswerButton.addClass(classes.hide!);
+    const round = this.lessons.getCurrentRound();
+    if (round) {
+      this.missRounds.push(round);
+    }
     this.box.showAnswer(this.puzzle.getElements());
     this.isWin = true;
     this.submitButton.getElement().textContent = 'Continue';
     this.showCheck();
+  }
+
+  private showStatistic = (): void => {
+    this.removeClass(classes.game!);
+    this.hint.hide();
+    this.progressBar.hide();
+    this.clear();
+    this.clearChild();
+    const statisticModal = new Statistic(this.container, this.lessons, this.missRounds, this.continueClickCallback);
+    statisticModal.init();
+  }
+
+  private continueClickCallback = (): void => {
+    this.showStatisticButton.addClass(classes.hide!);
+    this.addClass(classes.game!);
+    this.hint.show();
+    this.progressBar.show();
+    this.appendChild([this.wrap.picture,
+      this.wrap.separator,
+      this.wrap.puzzle,
+      this.wrap.buttons]);
+    this.startNewLesson();
+    this.container.getElement().append(this.element);
   }
 }

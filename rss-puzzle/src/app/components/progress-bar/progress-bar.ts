@@ -26,5 +26,13 @@ export default class ProgressBar extends BaseComponent {
     
     this.container.append(this);
   }
+
+  public hide(): void {
+    this.addClass(classes.hide!);
+  }
+
+  public show(): void {
+    this.removeClass(classes.hide!);
+  }
   
 }

@@ -40,7 +40,7 @@ export default class StartPage extends BaseComponent {
     this.logout();
   }
 
-  public logout() {
+  public logout(): void {
     this.clearContainer();
     this.showAuth();
     

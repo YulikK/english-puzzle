@@ -71,6 +71,12 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     return value;
   }
 
+  public setElementSrc(src: string): void {
+    if (this.element instanceof HTMLImageElement) {
+      this.element.src = src;
+    }
+  }
+
   public addClass(classNameClassName: string): void {
     this.element.classList.add(classNameClassName);
   }

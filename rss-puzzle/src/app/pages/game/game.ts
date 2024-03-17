@@ -42,7 +42,7 @@ export default class Game extends BaseComponent {
     this.progressBar = new ProgressBar(this.progressBarContainer);
     this.puzzleGameContainer.append(div({className: classes.wrap}, this.progressBarContainer, this.hintContainer));
     this.hint = new Hint(this.hintContainer, this.options, this.lessons);
-    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.lessons);
+    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.progressBar, this.lessons);
     this.hint.setOnPictureCallback(this.puzzleGame.backgroundToggle);
   }
 

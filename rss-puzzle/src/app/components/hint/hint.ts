@@ -118,5 +118,13 @@ export default class Hint extends BaseComponent {
     }
   }
 
+  public hide(): void {
+    this.addClass(classes.hide!);
+  }
+
+  public show(): void {
+    this.removeClass(classes.hide!);
+  }
+
 }
 

@@ -1,4 +1,4 @@
-import type { LessonType} from "../utils/types";
+import type { LessonType, RoundType} from "../utils/types";
 import type Store from "../API/store";
 
 export default class Lessons {
@@ -28,9 +28,12 @@ export default class Lessons {
     return '';
   }
 
+  public getCurrentRound(): RoundType | undefined {
+    return this.currentLesson?.words[this.countRound];
+  }
+
   public getTranslate(): string {
     if (this.currentLesson) {
-      console.log(this.currentLesson.words[this.countRound]?.textExampleTranslate)
       return this.currentLesson.words[this.countRound]?.textExampleTranslate || '';
     }
     return '';
