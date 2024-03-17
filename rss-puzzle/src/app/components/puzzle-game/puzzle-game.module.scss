@@ -1,5 +1,6 @@
 @import 'src/scss/utils.scss';
 
+
 .gameWrapper{
   display: flex;
   flex-direction: column;
@@ -39,4 +40,23 @@
 .hide{
   @include visually-hidden;
 }
+
+.infoWrap {
+  display: flex;
+  flex-direction: column;
+  
+  margin: 10px;
+}
+
+.infoText {
+  color: rgb(30, 66, 98);
+  font-family: $font-stack;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
 

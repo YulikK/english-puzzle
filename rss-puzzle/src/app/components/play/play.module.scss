@@ -1,4 +1,14 @@
 @import 'src/scss/constant.scss';
+
+@keyframes rotateAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
 .sound{
   cursor: pointer;
   display: inline-block;
@@ -17,3 +27,5 @@
   width: 24px;
   height: 24px;
 }
+
+

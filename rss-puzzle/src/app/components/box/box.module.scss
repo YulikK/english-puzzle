@@ -1,4 +1,17 @@
 
+@keyframes ShowPictureAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.showPicture {
+  animation: ShowPictureAnimation 0.5s ease-in-out;
+  opacity: 0;
+}
 
 .line {
   width: 100%;

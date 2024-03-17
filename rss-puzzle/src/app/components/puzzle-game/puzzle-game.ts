@@ -1,7 +1,7 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import type Lessons from "@/app/model/lessons.ts";
 import { URL } from "@/constant.ts";
-import { div} from "../tags.ts";
+import { div, span} from "../tags.ts";
 import Box from "../box/box.ts";
 import Puzzle from "../puzzle/puzzle.ts";
 import Button from "../button/button.ts";
@@ -24,6 +24,7 @@ export default class PuzzleGame extends BaseComponent {
     picture: BaseComponent;
     puzzle: BaseComponent;
     buttons: BaseComponent;
+    separator: BaseComponent;
     [key: string]: BaseComponent;
   };
 
@@ -52,7 +53,8 @@ export default class PuzzleGame extends BaseComponent {
     this.wrap = {
       picture: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'picture'}),
       puzzle: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'puzzle' }),
-      buttons: new BaseComponent({ tag: 'div', className: `${classes.buttonsContainer}`})
+      buttons: new BaseComponent({ tag: 'div', className: `${classes.buttonsContainer}` }),
+      separator: div({className: classes.separator})
     };
     this.box = new Box(this.wrap.picture, this.wrap.puzzle);
     
@@ -62,7 +64,7 @@ export default class PuzzleGame extends BaseComponent {
     this.wrap.buttons.appendChild([this.showAnswerButton, this.submitButton]);
 
     this.appendChild([this.wrap.picture,
-      div({className: classes.separator}),
+      this.wrap.separator,
       this.wrap.puzzle,
     this.wrap.buttons]);
 
@@ -171,42 +173,64 @@ export default class PuzzleGame extends BaseComponent {
 
   private onSubmit = (): void => {
     if (this.isLessonEnd) {
-      this.fixLine();
-      this.lessons.setNextLevel();
-      this.sentence = this.lessons.getSentence().split(' ');
-      this.image.src = `${URL}images/${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
-      
-      
-      this.submitButton.getElement().textContent = 'Check';
-      this.wrap.picture.destroyChild();
-      this.wrap.picture.clear();
-      this.wrap.picture.clearChild();
-      
-      this.isLessonEnd = false;
-      this.isWin = false;
+      this.startNewLesson();
     } else if (!this.isWin) {
-        this.markAnswer();
-        if (this.isWin) {
-          this.submitButton.getElement().textContent = 'Continue';
-        }
+      this.checkAnswer();
       } else {
-        this.hideMark();
-        this.lessons.setNextRound();
-        this.hint.updatePlayFile();
-        this.hint.updatesTextTranslate();
-        
-        this.sentence = this.lessons.getSentence().split(' ');
-        if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {
-          this.renderRound();
-          this.submitButton.getElement().textContent = 'Check';
-          this.isWin = false;
-        } else {
-          this.submitButton.getElement().textContent = 'Next lesson';
-          this.isLessonEnd = true;
-        }
-      }
+      this.startNewRound();
+    }
+  }
+
+  private startNewLesson(): void {
+    this.fixLine();
+    this.lessons.setNextLevel();
+    this.sentence = this.lessons.getSentence().split(' ');
+    this.image.src = `${URL}images/${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
+    this.submitButton.getElement().textContent = 'Check';
+    this.showAnswerButton.removeClass(classes.hide!);
+    this.wrap.picture.destroyChild();
+    this.wrap.picture.clear();
+    this.wrap.picture.clearChild();
+    this.wrap.separator.destroyChild();
+    this.isLessonEnd = false;
+    this.isWin = false;
+  }
+
+  private checkAnswer(): void {
+    this.markAnswer();
+    if (this.isWin) {
+      this.submitButton.getElement().textContent = 'Continue';
+    }
+  }
+
+  private startNewRound(): void {
+    this.hideMark();
+    this.fixLine();
+    this.lessons.setNextRound();
+    this.hint.updatePlayFile();
+    this.hint.updatesTextTranslate();
     
-    
+    this.sentence = this.lessons.getSentence().split(' ');
+    if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {
+      this.renderRound();
+      this.submitButton.getElement().textContent = 'Check';
+      this.isWin = false;
+    } else {
+      this.showPictureInformation();
+      this.submitButton.getElement().textContent = 'Next lesson';
+      this.showAnswerButton.addClass(classes.hide!);
+      this.isLessonEnd = true;
+    }
+  }
+
+  private showPictureInformation(): void {
+    this.wrap.picture.getElement().style.backgroundImage = `url(${this.image.src})`;
+    this.wrap.separator.appendChild([div({ className: classes.infoWrap },
+      span({ className: classes.infoText, textContent: `Author: ${this.lessons.getCurrentLesson()?.levelData.author}` }),
+      span({ className: classes.infoText, textContent: `Name: ${this.lessons.getCurrentLesson()?.levelData.name}` }),
+      span({ className: classes.infoText, textContent: `${this.lessons.getCurrentLesson()?.levelData.year}` }))
+    ]);
+    this.box.showPicture();
   }
 
   private hideMark(): void {

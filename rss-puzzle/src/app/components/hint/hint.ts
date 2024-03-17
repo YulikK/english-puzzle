@@ -1,5 +1,5 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
-import { a, img, p, div } from "@/app/components/tags.ts";
+import { p, div } from "@/app/components/tags.ts";
 import type Options from "@/app/Entities/options.ts";
 import { HintName } from "@/app/utils/types.ts";
 import type Lessons from "@/app/model/lessons.ts";
@@ -84,13 +84,6 @@ export default class Hint extends BaseComponent {
       hintArr.push(this.hintTranslate);
     }
     return hintArr;
-  }
-
-  private soundPlay = (): void => {
-    if (this.hintSound) {
-      this.hintSound.toggleClass(classes.soundOn!);
-    }
-    
   }
   
   private changeOptionsHandler = (id: HintName): void => {

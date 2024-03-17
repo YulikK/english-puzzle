@@ -217,6 +217,13 @@ export default class Box {
     });
     return complete;
   }
+
+  public showPicture(): void { 
+    const blockPicture = this.answerContainer.getElement().querySelectorAll(`.${classes.container}`);
+    blockPicture.forEach((block) => {
+      block.classList.add(classes.showPicture!);
+    });
+  }
 }
 
 function findPuzzleContainer(group: BaseComponent[], puzzle: BaseComponent): BaseComponent | undefined {

@@ -1,13 +1,5 @@
 @import 'src/scss/constant.scss';
 @import 'src/scss/utils.scss';
-@keyframes rotateAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 50% 100%;
-  }
-}
 
 .hide {
   @include visually-hidden;
