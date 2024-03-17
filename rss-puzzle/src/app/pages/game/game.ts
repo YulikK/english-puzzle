@@ -39,7 +39,7 @@ export default class Game extends BaseComponent {
     this.puzzleGameContainer = div({ className: classes.gameWrapper });
     this.progressBarContainer = div({ className: classes.progressBarContainer });
     this.hintContainer = div({ className: classes.hintContainer });
-    this.progressBar = new ProgressBar(this.progressBarContainer);
+    this.progressBar = new ProgressBar(this.progressBarContainer, this.lessons);
     this.puzzleGameContainer.append(div({className: classes.wrap}, this.progressBarContainer, this.hintContainer));
     this.hint = new Hint(this.hintContainer, this.options, this.lessons);
     this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.progressBar, this.lessons);

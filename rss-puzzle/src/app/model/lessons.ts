@@ -92,4 +92,8 @@ export default class Lessons {
       this.currentLesson = lesson;
     }
   }
+
+  public getLessons(): LessonType[] {
+    return this.lessons;
+  }
 }
