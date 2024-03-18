@@ -14,31 +14,31 @@
   align-content: center;
   width: 24px;
   height: 24px;
-  background-image: url('img/');
+  // background-image: url('img/');
   background-size: cover;
   cursor: pointer;
 }
 
 .input:checked + .onSound{
-  background-image: url('img/sound-on.png');
+  background-image: url('/img/sound-on.png');
 }
 
 .input:not(:checked) + .onSound  {
-  background-image: url('img/sound-off.png');
+  background-image: url('/img/sound-off.png');
 }
 
 .input:checked + .onTranslate{
-  background-image: url('img/translate-on.png');
+  background-image: url('/img/translate-on.png');
 }
 
 .input:not(:checked) + .onTranslate  {
-  background-image: url('img/translate-off.png');
+  background-image: url('/img/translate-off.png');
 }
 
 .input:checked + .onPicture{
-  background-image: url('img/picture-on.png');
+  background-image: url('/img/picture-on.png');
 }
 
 .input:not(:checked) + .onPicture  {
-  background-image: url('img/picture-off.png');
+  background-image: url('/img/picture-off.png');
 }

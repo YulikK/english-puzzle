@@ -26,13 +26,13 @@
 }
 
 .puzzleFirst{
-  mask: url(img/puzzle-start.png);
+  mask: url('/img/puzzle-start.png');
 }
 
 .puzzleInside{
-  mask: url(img/puzzle-inside.png);
+  mask: url('/img/puzzle-inside.png');
 }
 
 .puzzleLast {
-  mask: url(img/puzzle-last.png);
+  mask: url('/img/puzzle-last.png');
 }

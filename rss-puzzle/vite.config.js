@@ -4,7 +4,6 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import autoprefixer from 'autoprefixer';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import checker from 'vite-plugin-checker';
-import { copy } from 'vite-plugin-copy';
 
 export default {
   publicDir: 'assets',
@@ -46,11 +45,6 @@ export default {
       webp: {
         quality: 70,
       },
-    }),
-    copy({
-      targets: [
-        { src: 'src/assets/img/*.svg', dest: 'img' }
-      ]
     }),
     tsconfigPaths(),
     checker({
