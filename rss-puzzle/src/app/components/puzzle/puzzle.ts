@@ -6,6 +6,8 @@ import classes from "./puzzle.module.scss";
 export default class Puzzle {
   private elements: BaseComponent[] = [];
 
+  private fixElements: BaseComponent[][] = [];
+
   private image: HTMLImageElement;
 
   private showOption: boolean;
@@ -32,7 +34,8 @@ export default class Puzzle {
 
   public createPuzzle(width: number, height: number, line: number, wordCount: number, sentence: string[]): void{
     for (let word = 0; word < wordCount; word += 1) {
-      this.makeElement(line, word, wordCount, width, height, sentence[word]);
+      const widthElement = Math.round(width / wordCount) + wordCount * 0.1;
+      this.makeElement(line, word, wordCount, widthElement, height, sentence[word]);
     }
   }
 
@@ -72,6 +75,7 @@ export default class Puzzle {
   }
 
   public fixLine(): void {
+    this.fixElements.push(this.elements);
     this.elements.forEach((puzzle) => {
       const blockElement = puzzle.getElement();
       blockElement.style.backgroundImage = `url(${this.image.src})`;
@@ -116,5 +120,30 @@ export default class Puzzle {
       this.dragging.removeClass(classes.dragging!);
       this.dragging = null;
     }
+  }
+
+  public clearFixElements(): void {
+    this.fixElements = [];
+  }
+
+  public resize(width: number, height: number): void {
+    this.fixElements.forEach((line) => {
+      const countElement = line.length;
+      const widthElement = Math.round(width / countElement) + countElement * 0.1;
+      line.forEach((block) => {
+        const blockElement = block.getElement();
+        blockElement.style.width = `${widthElement}px`;
+        blockElement.style.height = `${height}px`;
+        blockElement.style.maskSize = `${widthElement}px ${height}px`;
+      });
+    });
+    const elementCount = this.elements.length;
+    const widthElement = Math.round(width / elementCount) + elementCount * 0.1;
+    this.elements.forEach((block) => {
+      const blockElement = block.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      blockElement.style.maskSize = `${widthElement}px ${height}px`;
+    });
   }
 }

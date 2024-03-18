@@ -15,6 +15,8 @@ export default class Box {
 
   public answer: BaseComponent[] = [];
 
+  private fixAnswer: BaseComponent[][] = [];
+
   public source: BaseComponent[] = [];
 
   constructor(answerContainer: BaseComponent, sourcesContainer: BaseComponent) {
@@ -28,7 +30,8 @@ export default class Box {
     this.makeAnswerLine(height);
 
     for (let word = 0; word < wordCount; word += 1) {
-      this.fillLines(lineId, word, width, height);
+      const widthElement = Math.round(width / wordCount) + wordCount * 0.1;
+      this.fillLines(lineId, word, widthElement, height);
     }
   }
 
@@ -69,7 +72,8 @@ export default class Box {
     this.answerLine?.append(emptyBlockPict);
   }
 
-  public fixLine():void {
+  public fixLine(): void {
+    this.fixAnswer.push(this.answer);
     this.answer.forEach((block) => {
       const blockElement = block.getElement();
       blockElement.ondragover = null;
@@ -232,6 +236,46 @@ export default class Box {
     blockPicture.forEach((block) => {
       block.classList.add(classes.showPicture!);
     });
+  }
+
+  public clearFixElements(): void {
+    this.fixAnswer = [];
+  }
+
+  public resize(width: number, height: number): void {
+    if (this.answerLine && this.sourceLine) {
+      this.answerLine.getElement().style.height = `${height}px`;
+      this.sourceLine.getElement().style.height = `${height}px`;
+    }
+    this.fixAnswer.forEach((line) => {
+      const countElement = line.length;
+      const widthElement = Math.round(width / countElement) + countElement * 0.1;
+      line.forEach((block, index) => {
+        const blockElement = block.getElement();
+        blockElement.style.width = `${widthElement}px`;
+        blockElement.style.height = `${height}px`;
+        const margin = index === 0 ? 0 : widthElement * 0.05
+        blockElement.style.marginLeft = `-${margin}px`;
+      });
+    });
+    const countElement = this.answer.length;
+    const widthElement = Math.round(width / countElement) + countElement * 0.1;
+    this.answer.forEach((block, index) => {
+        
+      const blockElement = block.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      const margin = index === 0 ? 0 : widthElement * 0.05
+      blockElement.style.marginLeft = `-${margin}px`;
+    });
+    this.source.forEach((block, index) => {
+      const blockElement = block.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      const margin = index === 0 ? 0 : widthElement * 0.05
+      blockElement.style.marginLeft = `-${margin}px`;
+    });
+  
   }
 }
 

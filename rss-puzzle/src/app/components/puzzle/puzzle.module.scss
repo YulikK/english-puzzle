@@ -23,30 +23,16 @@
   margin: 0;
   transition: 0.4s;
   cursor: grab;
-
-  // clip-path: url('img/puzzle-start.png');
-  // mask: url(img/puzzle-start.png);
-  // mask-size: 184px 80px;
-//   --g: 6px; /* controls the gap */
-//   --r: 42px;  /* control the circular shapes */
-
-// background: 
-//   radial-gradient(var(--r) at left 50% bottom var(--r), green 95%, #0000),
-//   radial-gradient(calc(var(--r) + var(--g)) at calc(100% + var(--g)) 50%, #0000 95%, red)
-//   top/100% calc(100% - var(--r)) no-repeat;
 }
 
 .puzzleFirst{
   mask: url(img/puzzle-start.png);
-  // mask-size: 184px 80px;
 }
 
 .puzzleInside{
   mask: url(img/puzzle-inside.png);
-  // mask-size: 184px 80px;
 }
 
 .puzzleLast {
   mask: url(img/puzzle-last.png);
-  // mask-size: 184px 80px;
 }
