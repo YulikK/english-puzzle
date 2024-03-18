@@ -1,7 +1,8 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import { div, p } from "@/app/components/tags.ts";
-import Chose from "../modal/choose/chose";
-import Lessons from "@/app/model/lessons";
+import type Lessons from "@/app/model/lessons";
+import type { Callback } from "@/app/utils/types";
+import Chose from "../modal/choose/chose.ts";
 import classes from "./progress-bar.module.scss";
 
 export default class ProgressBar extends BaseComponent {
@@ -14,6 +15,8 @@ export default class ProgressBar extends BaseComponent {
   private round: BaseComponent;
 
   private lessons: Lessons;
+
+  private chooseLessonCallback: Callback | null = null;
 
   constructor(container: BaseComponent, lesson: Lessons) {
     super({ tag: 'div', className: classes.progressWrapper }); 
@@ -33,6 +36,10 @@ export default class ProgressBar extends BaseComponent {
     this.getElement().addEventListener('click', this.onClick)
   }
 
+  public setChooseLessonCallback(callback: () => void): void {
+    this.chooseLessonCallback = callback;
+  }
+
   public hide(): void {
     this.addClass(classes.hide!);
   }
@@ -41,8 +48,8 @@ export default class ProgressBar extends BaseComponent {
     this.removeClass(classes.hide!);
   }
 
-  private onClick = () => {
-    const choseModal = new Chose(this.container, this.lessons);
+  private onClick = (): void => {
+    const choseModal = new Chose(this.container, this.lessons, this.chooseLessonCallback);
     choseModal.init();
   }
   

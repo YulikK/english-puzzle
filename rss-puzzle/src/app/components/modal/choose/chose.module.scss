@@ -19,19 +19,12 @@
   padding: 0.5em;
   &:hover{
     background: none;
-    // border-radius: 50%;
   }
-  // position: sticky;
-  // top: 0;
-  // z-index: 10;
-  // background: linear-gradient(89.43deg, rgb(245, 168, 78) 0.399%,rgb(246, 69, 141) 99.64%);
 }
 
 .buttonWrap{
   display: flex;
   justify-content: end;
-  
-  // margin: 20px 0;
 }
 
 .level{
@@ -47,7 +40,6 @@
   display: flex;
   flex-wrap: wrap;
   border: 1px solid rgb(144, 169, 197);
-  // background: rgba(193, 202, 217, 0.23);
   background: rgb(255, 255, 255);
   margin-left: 10%;
 }
@@ -68,6 +60,11 @@
   height: 60px;
 }
 
+.noImage{
+  width: 50px;
+  height: 50px;
+}
+
 .lessonName{
   color: rgb(52, 83, 121);
   font-family: $font-stack;
@@ -84,17 +81,9 @@ font-family: $font-stack;
 font-size: 24px;
 font-weight: 400;
 margin-left: 1em;
-// line-height: 28px;
-// letter-spacing: 0px;
-// text-align: left;
 }
 
 .lessonsWrap{
   display: flex;
   flex-direction: column;
-  // align-items: center;
-  // width: 100%;
-  // padding: 3%;
-  // border-radius: 40px;
-  // background: none;
 }

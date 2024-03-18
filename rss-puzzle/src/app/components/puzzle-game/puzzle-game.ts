@@ -61,6 +61,7 @@ export default class PuzzleGame extends BaseComponent {
     this.lessons = lessons;
     this.hint = hint;
     this.progressBar = progressBar;
+    this.progressBar.setChooseLessonCallback(this.chooseLessonCallback);
     this.wrap = {
       picture: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'picture'}),
       puzzle: new BaseComponent({ tag: 'div', className: `${classes.puzzleContainer}`, id: 'puzzle' }),
@@ -185,7 +186,7 @@ export default class PuzzleGame extends BaseComponent {
 
   private onSubmit = (): void => {
     if (this.isLessonEnd) {
-      this.startNewLesson();
+      this.startNextLesson();
     } else if (!this.isWin) {
       this.checkAnswer();
       } else {
@@ -193,19 +194,25 @@ export default class PuzzleGame extends BaseComponent {
     }
   }
 
+  private startNextLesson(): void {
+    this.lessons.setNextLevel();
+    this.startNewLesson();
+  }
+
   private startNewLesson(): void {
     this.fixLine();
-    this.lessons.setNextLevel();
     this.sentence = this.lessons.getSentence().split(' ');
     this.image.src = `${URL}images/${this.lessons.getCurrentLesson()?.levelData.imageSrc}`;
     this.submitButton.getElement().textContent = 'Check';
     this.showAnswerButton.removeClass(classes.hide!);
+    this.showStatisticButton.addClass(classes.hide!);
     this.wrap.picture.destroyChild();
     this.wrap.picture.clear();
     this.wrap.picture.clearChild();
     this.wrap.separator.destroyChild();
     this.isLessonEnd = false;
     this.isWin = false;
+    this.missRounds = [];
   }
 
   private checkAnswer(): void {
@@ -231,6 +238,7 @@ export default class PuzzleGame extends BaseComponent {
       this.isWin = false;
     } else {
       this.showPictureInformation();
+      this.lessons.addToHistory();
       this.submitButton.getElement().textContent = 'Next lesson';
       this.showStatisticButton.removeClass(classes.hide!);
       this.showAnswerButton.addClass(classes.hide!);
@@ -288,7 +296,11 @@ export default class PuzzleGame extends BaseComponent {
       this.wrap.separator,
       this.wrap.puzzle,
       this.wrap.buttons]);
-    this.startNewLesson();
+    this.startNextLesson();
     this.container.getElement().append(this.element);
+  }
+
+  private chooseLessonCallback = (): void => {
+    this.startNewLesson();
   }
 }

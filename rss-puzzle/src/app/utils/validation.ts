@@ -1,5 +1,5 @@
 import { MIN_LENGTH_LAST_NAME, MIN_LENGTH_FIRST_NAME } from '@/constant.ts';
-import type { UserType, OptionsType } from "./types.ts";
+import type { UserType, OptionsType , LessonType } from "./types.ts";
 import { FieldName } from "./types.ts";
 
 type ValidationType = {
@@ -62,5 +62,15 @@ export function isUserType(entity: unknown): entity is UserType {
       typeof entity.firstName === 'string' &&
       'lastName' in entity &&
       typeof entity.lastName === 'string'
+  );
+}
+
+export function isLessonType(entity: unknown): entity is LessonType {
+  return Boolean(
+    typeof entity === 'object' &&
+      Array.isArray(entity) &&
+      entity && entity.length > 0 &&
+      'levelData' in entity[0] &&
+      'words' in entity[0]
   );
 }
