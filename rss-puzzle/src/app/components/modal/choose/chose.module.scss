@@ -1,0 +1,89 @@
+
+@import 'src/scss/utils.scss';
+.chose{
+  width: 80%;
+  border-radius: 40px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(89.43deg, rgb(245, 168, 78) 0.399%,rgb(246, 69, 141) 99.64%);
+  max-height: 70svh;
+  overflow-y: auto;
+}
+
+.close{
+  background: none;
+  margin: 0.3em 1em;
+  padding: 0.5em;
+  &:hover{
+    background: none;
+  }
+}
+
+.buttonWrap{
+  display: flex;
+  justify-content: end;
+}
+
+.level{
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: -1px;
+  z-index: 10;
+  background: linear-gradient(89.43deg, rgb(245, 168, 78) 0.399%, rgb(246, 69, 141) 99.64%);
+}
+
+.lessonsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid rgb(144, 169, 197);
+  background: rgb(255, 255, 255);
+  margin-left: 10%;
+}
+
+.lesson{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+  gap: 1%;
+  flex-grow: 1;
+  border: 1px solid rgb(144, 169, 197);
+  background: rgba(193, 202, 217, 0.23);
+}
+
+.image{
+  width: 90px;
+  height: 60px;
+}
+
+.noImage{
+  width: 50px;
+  height: 50px;
+}
+
+.lessonName{
+  color: rgb(52, 83, 121);
+  font-family: $font-stack;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  margin: 0.5em;
+
+}
+
+.levelTittle{
+color: rgb(52, 83, 121);
+font-family: $font-stack;
+font-size: 24px;
+font-weight: 400;
+margin-left: 1em;
+}
+
+.lessonsWrap{
+  display: flex;
+  flex-direction: column;
+}

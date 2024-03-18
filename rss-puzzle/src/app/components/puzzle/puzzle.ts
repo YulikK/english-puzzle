@@ -1,3 +1,4 @@
+import type { Callback } from "@/app/utils/types.ts";
 import type { BaseComponent } from "../base-components";
 import { div, span } from "../tags.ts";
 import classes from "./puzzle.module.scss";
@@ -13,14 +14,14 @@ export default class Puzzle {
 
   private puzzleClickCallback: (currentPuzzle: BaseComponent | undefined) => void;
 
-  private dragStartCallback: () => void;
+  private dragStartCallback: Callback;
 
   private dargEndCallback: (currentPuzzle: BaseComponent) => void;
 
   constructor(image: HTMLImageElement,
     showOption: boolean,
     puzzleClickCallback: (currentPuzzle: BaseComponent | undefined) => void,
-    dragStartCallback: () => void,
+    dragStartCallback: Callback,
     dargEndCallback: (currentPuzzle: BaseComponent) => void,) {
     this.image = image;
     this.showOption = showOption;

@@ -1,5 +1,6 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import { div, h2, p } from "@/app/components/tags.ts";
+import type { Callback } from "@/app/utils/types.ts";
 import Button from "@/app/components/button/button.ts";
 import Header from "@/app/components/header/header.ts";
 import type User from "@/app/Entities/user.ts";
@@ -13,9 +14,9 @@ export default class Welcome extends BaseComponent {
 
   private header: BaseComponent;
 
-  private startCallback: () => void;
+  private startCallback: Callback;
 
-  constructor(user: User, logoutCallback: () => void, startCallback: () => void) {
+  constructor(user: User, logoutCallback: Callback, startCallback: Callback) {
     super({ tag: 'div', className: classes.pageWrapper }); 
     this.header = new Header(logoutCallback);
     this.startCallback = startCallback;

@@ -1,10 +1,11 @@
+import type { Callback } from '@/app/utils/types.ts';
 import { BaseComponent } from '../base-components.ts';
 
 import styles from './button.module.scss';
 
 interface Props {
   textContent: string;
-  onClick?: () => void;
+  onClick?: Callback;
   className?: string;
 }
 

@@ -1,5 +1,6 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import { div, h1, p, img, a, span } from "@/app/components/tags.ts";
+import type { Callback } from "@/app/utils/types";
 import classes from "./header.module.scss";
 
 export default class Header extends BaseComponent {
@@ -7,9 +8,9 @@ export default class Header extends BaseComponent {
 
   private header: BaseComponent;
 
-  private logoutCallback: () => void;
+  private logoutCallback: Callback;
 
-  constructor(logoutCallback: () => void) {
+  constructor(logoutCallback: Callback) {
     super({ tag: 'header', className: classes.header }); 
     this.logoutCallback = logoutCallback;
     

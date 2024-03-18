@@ -1,5 +1,6 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import { div } from "@/app/components/tags.ts";
+import type { Callback } from "@/app/utils/types";
 import Header from "@/app/components/header/header.ts";
 import ProgressBar from "@/app/components/progress-bar/progress-bar.ts";
 import type Options from "@/app/Entities/options.ts";
@@ -29,7 +30,7 @@ export default class Game extends BaseComponent {
 
   private lessons: Lessons
 
-  constructor(container: HTMLElement, options:Options, logoutCallback: () => void, lessons: Lessons) {
+  constructor(container: HTMLElement, options:Options, logoutCallback: Callback, lessons: Lessons) {
     super({ tag: 'div', className: classes.gamePage }); 
 
     this.container = container;
@@ -39,7 +40,7 @@ export default class Game extends BaseComponent {
     this.puzzleGameContainer = div({ className: classes.gameWrapper });
     this.progressBarContainer = div({ className: classes.progressBarContainer });
     this.hintContainer = div({ className: classes.hintContainer });
-    this.progressBar = new ProgressBar(this.progressBarContainer);
+    this.progressBar = new ProgressBar(this.progressBarContainer, this.lessons);
     this.puzzleGameContainer.append(div({className: classes.wrap}, this.progressBarContainer, this.hintContainer));
     this.hint = new Hint(this.hintContainer, this.options, this.lessons);
     this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.progressBar, this.lessons);

@@ -42,3 +42,5 @@ export type LessonType = {
   levelData: TittleType,
   words: RoundType[]
 }
+
+export type Callback = () => void;

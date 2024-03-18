@@ -6,6 +6,8 @@ export default class Lessons {
 
   private currentLesson: LessonType | null = null;
 
+  private history: LessonType[] = [];
+
   private countRound = 0;
 
   private store: Store;
@@ -66,6 +68,22 @@ export default class Lessons {
     }
   }
 
+  public setLesson(id: string): void {
+    const lesson = this.getLessonById(id);
+    if (lesson) {
+      this.currentLesson = lesson;
+      this.countRound = 0;
+      this.store.setLastLesson(id);
+    }
+  }
+  
+  public addToHistory(): void {
+    if (this.currentLesson) {
+      this.history.push(this.currentLesson);
+      this.store.setHistory(this.history);
+    }
+  }
+
   public setNextRound(): void {
     this.countRound += 1;
   }
@@ -91,5 +109,18 @@ export default class Lessons {
     if (lesson) {
       this.currentLesson = lesson;
     }
+
+    const history = this.store.getHistory();
+    if (history) {
+      this.history = history;
+    }
+  }
+
+  public getLessons(): LessonType[] {
+    return this.lessons;
+  }
+
+  public getHistory(): LessonType[] {
+    return this.history;
   }
 }

@@ -1,5 +1,5 @@
 import { URL } from "@/constant.ts";
-import type { TittleType , RoundType } from "@/app/utils/types.ts";
+import type { TittleType , RoundType, Callback } from "@/app/utils/types.ts";
 import type Lessons from "@/app/model/lessons.ts";
 import { div, img, p, span } from "../../tags.ts";
 import { BaseComponent } from "../../base-components.ts";
@@ -7,7 +7,6 @@ import Play from "../../play/play.ts";
 import Button from "../../button/button.ts";
 import classes from "./statistic.module.scss";
 
-type Callback = () => void;
 export default class Statistic extends BaseComponent {
   private container: BaseComponent;
 

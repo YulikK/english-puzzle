@@ -2,6 +2,7 @@ import { BaseComponent } from "@/app/components/base-components.ts";
 import { div, h2 } from "@/app/components/tags.ts";
 import Button from "@/app/components/button/button.ts";
 import type User from "@/app/Entities/user.ts";
+import type { Callback } from "@/app/utils/types.ts";
 import { FieldName } from "@/app/utils/types.ts";
 import Input from "../../input/input.ts";
 import classes from "./auth.module.scss";
@@ -22,9 +23,9 @@ export default class Auth extends BaseComponent {
     lastName: BaseComponent;
   }
 
-  private loginCallback: () => void;
+  private loginCallback: Callback;
 
-  constructor(user: User, loginCallback: () => void) {
+  constructor(user: User, loginCallback: Callback) {
     super({ tag: 'form', className: classes.authPage, id: 'auth'}); 
     this.user = user;
     this.loginCallback = loginCallback;
