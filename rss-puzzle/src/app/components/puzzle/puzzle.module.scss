@@ -23,5 +23,16 @@
   margin: 0;
   transition: 0.4s;
   cursor: grab;
+}
 
+.puzzleFirst{
+  mask: url(img/puzzle-start.png);
+}
+
+.puzzleInside{
+  mask: url(img/puzzle-inside.png);
+}
+
+.puzzleLast {
+  mask: url(img/puzzle-last.png);
 }
