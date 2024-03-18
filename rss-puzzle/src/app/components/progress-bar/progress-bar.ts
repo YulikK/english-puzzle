@@ -36,7 +36,7 @@ export default class ProgressBar extends BaseComponent {
     this.getElement().addEventListener('click', this.onClick)
   }
 
-  public setChooseLessonCallback(callback: () => void): void {
+  public setChooseLessonCallback(callback: Callback): void {
     this.chooseLessonCallback = callback;
   }
 

@@ -1,5 +1,6 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import { div } from "@/app/components/tags.ts";
+import type { Callback } from "@/app/utils/types";
 import Header from "@/app/components/header/header.ts";
 import ProgressBar from "@/app/components/progress-bar/progress-bar.ts";
 import type Options from "@/app/Entities/options.ts";
@@ -29,7 +30,7 @@ export default class Game extends BaseComponent {
 
   private lessons: Lessons
 
-  constructor(container: HTMLElement, options:Options, logoutCallback: () => void, lessons: Lessons) {
+  constructor(container: HTMLElement, options:Options, logoutCallback: Callback, lessons: Lessons) {
     super({ tag: 'div', className: classes.gamePage }); 
 
     this.container = container;

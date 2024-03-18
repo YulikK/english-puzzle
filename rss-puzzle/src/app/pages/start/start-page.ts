@@ -1,6 +1,7 @@
 import { BaseComponent } from "@/app/components/base-components.ts";
 import Welcome from "@/app/components/modal/welcome/welcome.ts";
 import Auth from "@/app/components/modal/auth/auth.ts";
+import type { Callback } from "@/app/utils/types";
 import type User from "@/app/Entities/user.ts";
 import classes from "./start-page.module.scss";
 
@@ -13,11 +14,11 @@ export default class StartPage extends BaseComponent {
 
   private user: User;
 
-  private startGameCallback: () => void;
+  private startGameCallback: Callback;
 
-  private logoutCallback: () => void;
+  private logoutCallback: Callback;
 
-  constructor(container: HTMLElement, user: User, startGameCallback: () => void, logoutCallback: () => void) {
+  constructor(container: HTMLElement, user: User, startGameCallback: Callback, logoutCallback: Callback) {
     super({ tag: 'div', className: classes.startPage }); 
 
     this.container = container;
