@@ -1,4 +1,5 @@
 
+@import 'src/scss/colors.scss';
 @keyframes ShowPictureAnimation {
   0% {
     opacity: 1;
@@ -17,33 +18,35 @@
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  
+  justify-content: center;
+  background: rgb(204, 228, 254);
 }
 
 .pictureLine{
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: space-between;
   flex-wrap: nowrap;
+  justify-content: center;
+  background: rgb(204, 228, 254);
 }
 
 .container{
   min-width: 20px;
   height: auto;
-  background-color: rgb(204, 228, 254);
+  background: rgb(204, 228, 254);
   border-radius: 5px;
-  border: 1px solid #223a57;
   margin: 0;
 }
 
+.container:not(:first-child){
+  margin-left: -1%;
+}
+
 .choose{
-  border: 1px dotted #223a57;
-  transition: 0.4s;
-  transform: translate(0px, 10px);
-  
+  border-radius: 15px;
+  background: linear-gradient(90.00deg, $color-btn-1, $color-btn-2 58.015%, $color-btn-3 99.237%)
 }
 
 .success {

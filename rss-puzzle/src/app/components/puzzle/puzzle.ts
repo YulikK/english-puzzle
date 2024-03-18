@@ -32,14 +32,21 @@ export default class Puzzle {
 
   public createPuzzle(width: number, height: number, line: number, wordCount: number, sentence: string[]): void{
     for (let word = 0; word < wordCount; word += 1) {
-      this.makeElement(line, word, width, height, sentence[word]);
+      this.makeElement(line, word, wordCount, width, height, sentence[word]);
     }
   }
 
-  private makeElement(line: number, word: number, width: number, height: number, text: string | undefined): void {
+  private makeElement(line: number, word: number, wordCount: number, width: number, height: number, text: string | undefined): void {
+    let puzzleForm = classes.puzzleInside;
+    if (word === 0) {
+      puzzleForm = classes.puzzleFirst
+    }
+    if (word === wordCount - 1) {
+      puzzleForm = classes.puzzleLast
+    }
     const block = div({
       id: `bl-${line}-${word}`,
-      className: classes.block,
+      className: `${classes.block} ${puzzleForm}`,
       draggable: true,
       ondragstart: this.dragStart,
       ondragend: this.dragEnd,
@@ -52,6 +59,7 @@ export default class Puzzle {
     element.style.backgroundPosition = `-${word * width}px -${line * height}px`;
     element.style.width = `${width}px`;
     element.style.height = `${height}px`;
+    element.style.maskSize = `${width}px ${height}px`;
     this.elements.push(block);
   }
   

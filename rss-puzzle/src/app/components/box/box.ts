@@ -49,8 +49,13 @@ export default class Box {
       ondragover: this.onDragOver,
       ondragleave: this.onDragLeave
     });
-    newBlock.getElement().style.width = `${width}px`;
-    newBlock.getElement().style.height = `${height}px`;
+    if (width) {
+      const margin = word === 0 ? 0 : width * 0.05
+      newBlock.getElement().style.width = `${width}px`;
+      newBlock.getElement().style.height = `${height}px`;
+      newBlock.getElement().style.marginLeft = `-${margin}px`;
+    }
+    
     return newBlock;
   }
 
@@ -219,6 +224,10 @@ export default class Box {
   }
 
   public showPicture(): void { 
+    const line = this.answerContainer.getElement().querySelectorAll(`.${classes.pictureLine}`);
+    line.forEach((block) => {
+      block.classList.add(classes.showPicture!);
+    });
     const blockPicture = this.answerContainer.getElement().querySelectorAll(`.${classes.container}`);
     blockPicture.forEach((block) => {
       block.classList.add(classes.showPicture!);

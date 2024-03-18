@@ -103,7 +103,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private onLoadImage = (): void => {
-    this.getElement().style.width = `${this.image.width}px`;
+    // this.getElement().style.width = `${this.image.width}px`;
     this.hint.updatePlayFile();
     this.hint.updatesTextTranslate();
     this.renderRound();
@@ -117,8 +117,26 @@ export default class PuzzleGame extends BaseComponent {
     const line = this.lessons.getCountRound();
     const wordCount = this.sentence.length;
 
-    const partWidth = this.image.width / wordCount;
-    const partHeight = this.image.height / 10;
+    const windowWidth = window.innerWidth;
+    const containerWidth = windowWidth - windowWidth * 0.02;
+    const pictureWidth = Math.min(containerWidth - containerWidth * 0.03, this.image.width);
+    this.wrap.picture.getElement().style.width = `${pictureWidth}px`;
+    this.wrap.puzzle.getElement().style.width = `${pictureWidth}px`;
+
+    // исходник пазла 280
+    // пипка - 14 см
+    // 14*100/280=5%
+    // если блок 133 см
+    // пипка 5% от 133 = 6.65см
+    const pictureHeight = (this.image.height / this.image.width) * pictureWidth;
+    // console.log('pictureHeight', pictureHeight);
+    console.log('pictureWidth', pictureWidth);
+
+    const partWidth = Math.round(pictureWidth / wordCount) + wordCount * 0.1;
+    console.log('wordCount', wordCount);
+    console.log('partWidth', partWidth);
+    const partHeight = Math.round(pictureHeight / this.lessons.getLessonLength());
+    // console.log('rounds', this.lessons.getLessonLength());
 
     this.box.renderRound(partWidth, partHeight, line, wordCount);
     this.puzzle.createPuzzle(partWidth, partHeight, line, wordCount, this.sentence);
