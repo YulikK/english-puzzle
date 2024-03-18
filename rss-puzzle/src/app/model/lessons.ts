@@ -23,6 +23,10 @@ export default class Lessons {
     return this.currentLesson;
   }
 
+  public getCountLessonsInLevel(level: string): number {
+    return this.lessons.filter((lesson) => lesson.levelData.id.split('_')[0] === level).length;
+  }
+
   public getSentence(): string {
     if (this.currentLesson) {
       return this.currentLesson.words[this.countRound]?.textExample || '';

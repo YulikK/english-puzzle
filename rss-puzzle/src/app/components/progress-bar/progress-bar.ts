@@ -10,6 +10,8 @@ export default class ProgressBar extends BaseComponent {
 
   private progressLine: BaseComponent;
 
+  private progressCircle: BaseComponent;
+
   private level: BaseComponent;
 
   private round: BaseComponent;
@@ -22,22 +24,37 @@ export default class ProgressBar extends BaseComponent {
     super({ tag: 'div', className: classes.progressWrapper }); 
     this.container = container;
     this.lessons = lesson;
-    this.level = p(classes.level!, 'Lvl 1');
-    this.round = p(classes.round!, '10 / 42');
+    const levelNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[0] || '';
+    const lessonNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[1] || '';
+    const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
+    this.level = p(classes.level!, `Lvl ${levelNumber}`);
+    this.round = p(classes.round!, `${lessonNumber} / ${lessonCount}`);
+    this.progressCircle = div({ className: classes.progressCircle },
+      div({ className: classes.progressInformation },
+        this.level,
+        this.round));
     this.progressLine = div({ className: classes.progressBar },
-      div({ className: classes.progressCircle },
-        div({ className: classes.progressInformation },
-          this.level,
-          this.round))
-    );
+      this.progressCircle);
     this.appendChild([this.progressLine])
     
     this.container.append(this);
-    this.getElement().addEventListener('click', this.onClick)
+    this.progressCircle.getElement().addEventListener('click', this.onClick)
   }
 
   public setChooseLessonCallback(callback: Callback): void {
     this.chooseLessonCallback = callback;
+  }
+
+  private onChooseCallback = (): void =>{
+    const levelNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[0] || '';
+    const lessonNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[1] || '';
+    const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
+    this.level.getElement().textContent = `Lvl ${levelNumber}`;
+    this.round.getElement().textContent = `${lessonNumber} / ${lessonCount}`;
+    if (this.chooseLessonCallback) {
+      this.chooseLessonCallback();
+    }
+    
   }
 
   public hide(): void {
@@ -49,7 +66,7 @@ export default class ProgressBar extends BaseComponent {
   }
 
   private onClick = (): void => {
-    const choseModal = new Chose(this.container, this.lessons, this.chooseLessonCallback);
+    const choseModal = new Chose(this.container, this.lessons, this.onChooseCallback);
     choseModal.init();
   }
   
