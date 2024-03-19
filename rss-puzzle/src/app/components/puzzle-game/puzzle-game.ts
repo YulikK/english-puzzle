@@ -201,6 +201,7 @@ export default class PuzzleGame extends BaseComponent {
 
   private startNewLesson(): void {
     this.fixLine();
+    this.hint.startNewLesson();
     this.puzzle.clearFixElements();
     this.box.clearFixElements();
     this.sentence = this.lessons.getSentence().split(' ');
@@ -220,6 +221,7 @@ export default class PuzzleGame extends BaseComponent {
   private checkAnswer(): void {
     this.markAnswer();
     if (this.isWin) {
+      this.hint.showAllHints();
       this.showAnswerButton.addClass(classes.hide!);
       this.submitButton.getElement().textContent = 'Continue';
     }
@@ -229,8 +231,8 @@ export default class PuzzleGame extends BaseComponent {
     this.hideMark();
     this.fixLine();
     this.lessons.setNextRound();
-    this.hint.updatePlayFile();
-    this.hint.updatesTextTranslate();
+    this.hint.startNewLesson();
+    // this.hint.updatesTextTranslate();
     this.showAnswerButton.removeClass(classes.hide!);
     
     this.sentence = this.lessons.getSentence().split(' ');
@@ -275,6 +277,7 @@ export default class PuzzleGame extends BaseComponent {
     }
     this.box.showAnswer(this.puzzle.getElements());
     this.isWin = true;
+    this.hint.showAllHints();
     this.submitButton.getElement().textContent = 'Continue';
     this.showCheck();
   }
