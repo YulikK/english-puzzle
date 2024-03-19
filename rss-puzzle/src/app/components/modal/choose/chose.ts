@@ -7,7 +7,7 @@ import { div, p, a, img } from "../../tags.ts";
 import classes from "./chose.module.scss";
 
 export default class Chose extends BaseComponent {
-  private container: BaseComponent;
+  private container: HTMLElement;
 
   private lessons: Lessons;
 
@@ -15,19 +15,22 @@ export default class Chose extends BaseComponent {
 
   private callback: Callback | null = null;
 
-  constructor(container: BaseComponent, lessons: Lessons, callback: Callback | null) {
-    super({ tag: "div", className: classes.chose });
-    this.container = container;
+  constructor(lessons: Lessons, callback: Callback | null) {
+    super({ tag: "div", className: classes.background });
+    this.container = document.body;
     this.lessons = lessons
     this.callback = callback;
     this.closeButton = Button({ textContent: 'X', onClick: this.onCloseClick, className: classes.close });
     const lessonList = this.makeLessonList();
-    this.appendChild([div({ className: classes.buttonWrap }, this.closeButton)]);
-    this.appendChild(lessonList);
+    const modal = div({ className: classes.chose });
+    modal.appendChild([div({ className: classes.buttonWrap },
+      this.closeButton)]);
+    modal.appendChild(lessonList);
+    this.appendChild([modal]);
   }
 
   public init(): void {
-    this.container.append(this);
+    this.container.append(this.getElement());
   }
 
 
