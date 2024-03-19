@@ -8,7 +8,7 @@ type ValidationType = {
 }
 
 function getValidationConstant(field: FieldName):{message: string, minLength: number, regex: RegExp} {
-  const regex = /[a-zA-Z-]/;
+  const regex = /^[a-zA-Z-]*$/;
   let message = '';
   let minLength = 0;
   if (field === FieldName.firstName) {

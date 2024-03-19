@@ -168,7 +168,7 @@ export default class PuzzleGame extends BaseComponent {
   private isComplete(): void {
     if (this.box.isComplete()) {
       this.showCheck();
-    }
+    } else {this.hideCheck();}
   }
 
   private showCheck(): void {
@@ -222,7 +222,9 @@ export default class PuzzleGame extends BaseComponent {
   private checkAnswer(): void {
     this.markAnswer();
     if (this.isWin) {
+      this.fixLine();
       this.hint.showAllHints();
+      this.puzzle.showBackground();
       this.showAnswerButton.addClass(classes.hide!);
       this.submitButton.getElement().textContent = 'Continue';
     }
@@ -278,6 +280,8 @@ export default class PuzzleGame extends BaseComponent {
     this.box.showAnswer(this.puzzle.getElements());
     this.isWin = true;
     this.hint.showAllHints();
+    this.puzzle.showBackground();
+    this.fixLine();
     this.submitButton.getElement().textContent = 'Continue';
     this.showCheck();
   }
@@ -318,7 +322,7 @@ export default class PuzzleGame extends BaseComponent {
     this.wrap.puzzle.getElement().style.width = `${pictureWidth}px`;
 
     const pictureHeight = (this.image.height / this.image.width) * pictureWidth;
-    const partWidth = pictureWidth;// Math.round(pictureWidth / wordCount) + wordCount * 0.1;
+    const partWidth = pictureWidth;
     const partHeight = Math.round(pictureHeight / this.lessons.getLessonLength());
 
     return { height: partHeight, width: partWidth };

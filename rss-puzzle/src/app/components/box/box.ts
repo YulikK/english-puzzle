@@ -214,6 +214,12 @@ export default class Box {
   }
 
   public hideMark(): void {
+    this.fixAnswer.forEach((line) => {
+      line.forEach((block) => {
+        block.removeClass(classes.error!);
+        block.removeClass(classes.success!);
+      });
+    });
     this.answer.forEach(block => {
       block.removeClass(classes.error!);
       block.removeClass(classes.success!);
