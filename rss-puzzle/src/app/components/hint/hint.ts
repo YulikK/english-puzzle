@@ -102,6 +102,18 @@ export default class Hint extends BaseComponent {
     this.onChangePictureOption = callback;
   }
 
+  public showAllHints(): void {
+    this.hintSound.removeClass(classes.hide!);
+    this.hintTranslate.removeClass(classes.hide!);
+  }
+
+  public startNewLesson(): void {
+    this.updatesTextTranslate();
+    this.updatePlayFile();
+    this.updateSoundHint();
+    this.updateTranslateHint();
+  }
+
   private updateSoundHint(): void {
     if (this.options.items.onSound) {
       this.hintSound.removeClass(classes.hide!);

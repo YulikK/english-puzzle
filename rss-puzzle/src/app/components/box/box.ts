@@ -28,7 +28,10 @@ export default class Box {
 
   public renderRound(width: number, height:number, lineId: number, wordCount: number): void {
     this.makeAnswerLine(height);
-
+    if (this.sourceLine) {
+      this.sourceLine.getElement().style.height = `${height  }px`;
+    }
+    
     for (let word = 0; word < wordCount; word += 1) {
       const widthElement = Math.round(width / wordCount) + wordCount * 0.1;
       this.fillLines(lineId, word, widthElement, height);
