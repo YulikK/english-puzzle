@@ -7,8 +7,9 @@ type ValidationType = {
   error: string;
 }
 
-function getValidationConstant(field: FieldName):{message: string, minLength: number, regex: RegExp} {
-  const regex = /^[a-zA-Z-]*$/;
+function getValidationConstant(field: FieldName):{message: string, minLength: number, regexAll: RegExp, regexFirst: RegExp} {
+  const regexAll = /^[a-zA-Z-]*$/;
+  const regexFirst = /^[A-Z][a-zA-Z-]*$/;
   let message = '';
   let minLength = 0;
   if (field === FieldName.firstName) {
@@ -18,7 +19,7 @@ function getValidationConstant(field: FieldName):{message: string, minLength: nu
     message = 'Last name';
     minLength = MIN_LENGTH_LAST_NAME;
   }
-  return { message, minLength, regex };
+  return { message, minLength, regexAll, regexFirst };
 
 }
 
@@ -27,13 +28,13 @@ export function validateField(value: string, field: FieldName): ValidationType {
     isValid: false,
     error: '',
   }
-  const { message, minLength, regex } = getValidationConstant(field);
+  const { message, minLength, regexAll, regexFirst } = getValidationConstant(field);
 
   if (value.length < minLength) {
     validation.error = `${message} must be at least ${minLength} characters long`;
-  } else if (!regex.test(value)) {
+  } else if (!regexAll.test(value)) {
     validation.error = `${message} must contain only letters and hyphens`;
-  } else if (value.slice(0, 1) !== value.slice(0, 1).toUpperCase()) {
+  } else if (!regexFirst.test(value)) {
     validation.error = `${message} must start with a capital letter`;
   } else {
     validation.isValid = true;

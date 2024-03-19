@@ -222,9 +222,9 @@ export default class PuzzleGame extends BaseComponent {
   private checkAnswer(): void {
     this.markAnswer();
     if (this.isWin) {
+      this.puzzle.showBackground();
       this.fixLine();
       this.hint.showAllHints();
-      this.puzzle.showBackground();
       this.showAnswerButton.addClass(classes.hide!);
       this.submitButton.getElement().textContent = 'Continue';
     }
