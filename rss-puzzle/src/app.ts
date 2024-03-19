@@ -7,6 +7,7 @@ import User from "./app/Entities/user.ts";
 import Options from './app/Entities/options.ts';
 import mockData from "./app/data/mock.ts";
 import Lessons from "./app/model/lessons.ts";
+import Confirm from "./app/components/modal/confirm/confirm.ts";
 
 const {body} = document;
 const store = new Store();
@@ -25,6 +26,11 @@ function clearUser(): void {
 }
 
 function logout(): void {
+  const confirm = new Confirm(body, confirmLogout);
+  confirm.init();
+}
+
+function confirmLogout(): void {
   clearUser();
   clearContainer();
   startPage.logout();

@@ -70,7 +70,7 @@ export default class ProgressBar extends BaseComponent {
   }
 
   private onClick = (): void => {
-    const choseModal = new Chose(this.container, this.lessons, this.onChooseCallback);
+    const choseModal = new Chose(this.lessons, this.onChooseCallback);
     choseModal.init();
   }
   

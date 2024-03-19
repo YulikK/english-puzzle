@@ -36,9 +36,7 @@ export default class StartPage extends BaseComponent {
   }
 
   private logoutClick = (): void => {
-    
     this.logoutCallback();
-    this.logout();
   }
 
   public logout(): void {

@@ -1,4 +1,5 @@
 export const WELCOME_DESCRIPTION = 'Welcome to the world of English and art! Improve your English skills by collecting sentences and uncovering pictures of art. Ready for a challenge? Immerse yourself in the world of words and art with us!'
+export const CONFIRM_LOGOUT = 'Information about the user and his progress will be deleted. Continue?'
 const STORE_PREFIX = `RSS_Puzzle_Yulik`;
 const STORE_VER = `v1`;
 export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
