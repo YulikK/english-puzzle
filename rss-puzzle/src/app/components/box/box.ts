@@ -29,7 +29,7 @@ export default class Box {
   public renderRound(width: number, height:number, lineId: number, wordCount: number): void {
     this.makeAnswerLine(height);
     if (this.sourceLine) {
-      this.sourceLine.getElement().style.height = height + "px";
+      this.sourceLine.getElement().style.height = `${height  }px`;
     }
     
     for (let word = 0; word < wordCount; word += 1) {

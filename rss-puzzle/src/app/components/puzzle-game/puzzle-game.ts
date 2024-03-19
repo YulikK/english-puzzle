@@ -201,6 +201,7 @@ export default class PuzzleGame extends BaseComponent {
 
   private startNewLesson(): void {
     this.fixLine();
+    this.progressBar.updateInfo();
     this.hint.startNewLesson();
     this.puzzle.clearFixElements();
     this.box.clearFixElements();
@@ -232,7 +233,6 @@ export default class PuzzleGame extends BaseComponent {
     this.fixLine();
     this.lessons.setNextRound();
     this.hint.startNewLesson();
-    // this.hint.updatesTextTranslate();
     this.showAnswerButton.removeClass(classes.hide!);
     
     this.sentence = this.lessons.getSentence().split(' ');

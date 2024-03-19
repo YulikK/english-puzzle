@@ -46,15 +46,19 @@ export default class ProgressBar extends BaseComponent {
   }
 
   private onChooseCallback = (): void =>{
+    this.updateInfo();
+    if (this.chooseLessonCallback) {
+      this.chooseLessonCallback();
+    }
+    
+  }
+
+  public updateInfo(): void {
     const levelNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[0] || '';
     const lessonNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[1] || '';
     const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
     this.level.getElement().textContent = `Lvl ${levelNumber}`;
     this.round.getElement().textContent = `${lessonNumber} / ${lessonCount}`;
-    if (this.chooseLessonCallback) {
-      this.chooseLessonCallback();
-    }
-    
   }
 
   public hide(): void {

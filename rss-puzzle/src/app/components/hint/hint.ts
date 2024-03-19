@@ -106,6 +106,7 @@ export default class Hint extends BaseComponent {
     this.hintSound.removeClass(classes.hide!);
     this.hintTranslate.removeClass(classes.hide!);
   }
+
   public startNewLesson(): void {
     this.updatesTextTranslate();
     this.updatePlayFile();
