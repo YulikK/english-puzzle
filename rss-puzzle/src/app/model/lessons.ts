@@ -63,11 +63,12 @@ export default class Lessons {
 
   public setNextLevel(): void {
     if (this.currentLesson) {
+      this.store.setLastLesson(this.currentLesson.levelData.id);
       const nextLevel = this.lessons[this.lessons.indexOf(this.currentLesson) + 1];
       if (nextLevel) {
         this.currentLesson = nextLevel;
         this.countRound = 0;
-        this.store.setLastLesson(nextLevel.levelData.id);
+        // this.store.setLastLesson(nextLevel.levelData.id);
       }
     }
   }
@@ -77,7 +78,7 @@ export default class Lessons {
     if (lesson) {
       this.currentLesson = lesson;
       this.countRound = 0;
-      this.store.setLastLesson(id);
+      // this.store.setLastLesson(id);
     }
   }
   
@@ -111,8 +112,12 @@ export default class Lessons {
       lesson = this.getLessonById(data);
     } 
     if (lesson) {
-      this.currentLesson = lesson;
+      const nextLevel = this.lessons[this.lessons.indexOf(lesson) + 1];
+      if (nextLevel) {
+        this.currentLesson = nextLevel; //lesson;
+      }
     }
+    // this.setNextLevel();
 
     const history = this.store.getHistory();
     if (history) {

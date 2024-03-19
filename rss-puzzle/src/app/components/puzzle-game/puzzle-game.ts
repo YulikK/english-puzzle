@@ -127,6 +127,7 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private fixLine(): void {
+    // this.hideMark();
     this.puzzle.fixLine();
     this.box.fixLine();
   }
@@ -168,7 +169,7 @@ export default class PuzzleGame extends BaseComponent {
   private isComplete(): void {
     if (this.box.isComplete()) {
       this.showCheck();
-    }
+    } else this.hideCheck();
   }
 
   private showCheck(): void {
@@ -222,6 +223,7 @@ export default class PuzzleGame extends BaseComponent {
   private checkAnswer(): void {
     this.markAnswer();
     if (this.isWin) {
+      this.fixLine();
       this.hint.showAllHints();
       this.puzzle.showBackground();
       this.showAnswerButton.addClass(classes.hide!);
@@ -279,6 +281,8 @@ export default class PuzzleGame extends BaseComponent {
     this.box.showAnswer(this.puzzle.getElements());
     this.isWin = true;
     this.hint.showAllHints();
+    this.puzzle.showBackground();
+    this.fixLine();
     this.submitButton.getElement().textContent = 'Continue';
     this.showCheck();
   }
