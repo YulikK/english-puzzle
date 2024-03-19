@@ -76,10 +76,6 @@ export default class Puzzle {
 
   public fixLine(): void {
     this.fixElements.push(this.elements);
-    this.elements.forEach((puzzle) => {
-      const blockElement = puzzle.getElement();
-      blockElement.style.backgroundImage = `url(${this.image.src})`;
-    });
     this.elements.forEach((block) => {
       const blockElement = block.getElement();
       blockElement.ondragstart = null;
@@ -88,6 +84,13 @@ export default class Puzzle {
       blockElement.draggable = false;
     });
     this.elements = [];
+  }
+
+  public showBackground(): void {
+    this.elements.forEach((puzzle) => {
+      const blockElement = puzzle.getElement();
+      blockElement.style.backgroundImage = `url(${this.image.src})`;
+    });
   }
 
   public getElements(): BaseComponent[] {

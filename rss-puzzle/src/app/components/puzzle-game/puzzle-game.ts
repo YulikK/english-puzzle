@@ -223,6 +223,7 @@ export default class PuzzleGame extends BaseComponent {
     this.markAnswer();
     if (this.isWin) {
       this.hint.showAllHints();
+      this.puzzle.showBackground();
       this.showAnswerButton.addClass(classes.hide!);
       this.submitButton.getElement().textContent = 'Continue';
     }
