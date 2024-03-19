@@ -127,7 +127,6 @@ export default class PuzzleGame extends BaseComponent {
   }
 
   private fixLine(): void {
-    // this.hideMark();
     this.puzzle.fixLine();
     this.box.fixLine();
   }
@@ -169,7 +168,7 @@ export default class PuzzleGame extends BaseComponent {
   private isComplete(): void {
     if (this.box.isComplete()) {
       this.showCheck();
-    } else this.hideCheck();
+    } else {this.hideCheck();}
   }
 
   private showCheck(): void {
@@ -323,7 +322,7 @@ export default class PuzzleGame extends BaseComponent {
     this.wrap.puzzle.getElement().style.width = `${pictureWidth}px`;
 
     const pictureHeight = (this.image.height / this.image.width) * pictureWidth;
-    const partWidth = pictureWidth;// Math.round(pictureWidth / wordCount) + wordCount * 0.1;
+    const partWidth = pictureWidth;
     const partHeight = Math.round(pictureHeight / this.lessons.getLessonLength());
 
     return { height: partHeight, width: partWidth };
