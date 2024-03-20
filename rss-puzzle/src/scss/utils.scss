@@ -4,7 +4,7 @@
   $add-size: $max-size - $min-size;
   $max-free-width: $desktop-width-count - $mobile-width-count;
   @return calc(
-    #{$min-size + px} + #{$add-size} * ((100vw - 750px) / #{$max-free-width})
+    #{$min-size + px} + #{$add-size} * ((100vw - 760px) / #{$max-free-width})
   );
 }
 
