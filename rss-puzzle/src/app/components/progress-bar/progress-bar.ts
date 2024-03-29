@@ -5,6 +5,7 @@ import type { Callback } from "@/app/utils/types";
 import Chose from "../modal/choose/chose.ts";
 import classes from "./progress-bar.module.scss";
 
+const LVL_TXT = 'Lvl';
 export default class ProgressBar extends BaseComponent {
   private container: BaseComponent;
 
@@ -27,7 +28,7 @@ export default class ProgressBar extends BaseComponent {
     const levelNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[0] || '';
     const lessonNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[1] || '';
     const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
-    this.level = p(classes.level!, `Lvl ${levelNumber}`);
+    this.level = p(classes.level!, `${LVL_TXT} ${levelNumber}`);
     this.round = p(classes.round!, `${lessonNumber} / ${lessonCount}`);
     this.progressCircle = div({ className: classes.progressCircle },
       div({ className: classes.progressInformation },
@@ -57,7 +58,7 @@ export default class ProgressBar extends BaseComponent {
     const levelNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[0] || '';
     const lessonNumber = this.lessons.getCurrentLesson()?.levelData.id.split('_')[1] || '';
     const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
-    this.level.getElement().textContent = `Lvl ${levelNumber}`;
+    this.level.getElement().textContent = `${LVL_TXT} ${levelNumber}`;
     this.round.getElement().textContent = `${lessonNumber} / ${lessonCount}`;
   }
 
