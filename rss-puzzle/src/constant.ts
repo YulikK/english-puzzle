@@ -10,3 +10,4 @@ export const STORE_HISTORY = `history`;
 export const MIN_LENGTH_FIRST_NAME = 3;
 export const MIN_LENGTH_LAST_NAME = 4;
 export const URL = 'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/';
+export const TAIL = 14 * 100 / 280 / 100; // 280 - width puzzle, 14 width puzzle tail, 0.05 - 5% of width puzzle 

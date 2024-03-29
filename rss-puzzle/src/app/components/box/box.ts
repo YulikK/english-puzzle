@@ -1,3 +1,4 @@
+import { TAIL } from "@/constant.ts";
 import type { BaseComponent } from "../base-components";
 import { div } from "../tags.ts";
 import classes from "./box.module.scss";
@@ -263,7 +264,7 @@ export default class Box {
         const blockElement = block.getElement();
         blockElement.style.width = `${widthElement}px`;
         blockElement.style.height = `${height}px`;
-        const margin = index === 0 ? 0 : widthElement * 0.05
+        const margin = index === 0 ? 0 : widthElement * TAIL
         blockElement.style.marginLeft = `-${margin}px`;
       });
     });
@@ -274,14 +275,14 @@ export default class Box {
       const blockElement = block.getElement();
       blockElement.style.width = `${widthElement}px`;
       blockElement.style.height = `${height}px`;
-      const margin = index === 0 ? 0 : widthElement * 0.05
+      const margin = index === 0 ? 0 : widthElement * TAIL;
       blockElement.style.marginLeft = `-${margin}px`;
     });
     this.source.forEach((block, index) => {
       const blockElement = block.getElement();
       blockElement.style.width = `${widthElement}px`;
       blockElement.style.height = `${height}px`;
-      const margin = index === 0 ? 0 : widthElement * 0.05
+      const margin = index === 0 ? 0 : widthElement * TAIL;
       blockElement.style.marginLeft = `-${margin}px`;
     });
   

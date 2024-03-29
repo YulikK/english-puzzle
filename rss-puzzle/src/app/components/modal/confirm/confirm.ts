@@ -5,6 +5,9 @@ import Button from "@/app/components/button/button.ts";
 import { CONFIRM_LOGOUT } from "../../../../constant.ts";
 import classes from "./confirm.module.scss";
 
+const YES_TXT = 'Yes, delete';
+const NO_TXT = 'No, back';
+
 export default class Confirm extends BaseComponent {
   public yesBtn: BaseComponent;
 
@@ -21,7 +24,7 @@ export default class Confirm extends BaseComponent {
     this.logoutCallback = logoutCallback;
     this.container = container;
     this.yesBtn = Button({
-      textContent: 'Yes, delete',
+      textContent: YES_TXT,
       onClick: () => {
         this.logoutCallback()
       },
@@ -29,7 +32,7 @@ export default class Confirm extends BaseComponent {
     });
 
     this.noBtn = Button({
-      textContent: 'No, back',
+      textContent: NO_TXT,
       onClick: () => {
         this.destroy();
       },
