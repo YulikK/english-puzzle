@@ -1,6 +1,1861 @@
-import type { LessonType } from "../utils/types";
-/* cSpell:disable */
-const mockData: LessonType[] = [
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+(function polyfill() {
+  const relList = document.createElement("link").relList;
+  if (relList && relList.supports && relList.supports("modulepreload")) {
+    return;
+  }
+  for (const link2 of document.querySelectorAll('link[rel="modulepreload"]')) {
+    processPreload(link2);
+  }
+  new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type !== "childList") {
+        continue;
+      }
+      for (const node of mutation.addedNodes) {
+        if (node.tagName === "LINK" && node.rel === "modulepreload")
+          processPreload(node);
+      }
+    }
+  }).observe(document, { childList: true, subtree: true });
+  function getFetchOpts(link2) {
+    const fetchOpts = {};
+    if (link2.integrity) fetchOpts.integrity = link2.integrity;
+    if (link2.referrerPolicy) fetchOpts.referrerPolicy = link2.referrerPolicy;
+    if (link2.crossOrigin === "use-credentials")
+      fetchOpts.credentials = "include";
+    else if (link2.crossOrigin === "anonymous") fetchOpts.credentials = "omit";
+    else fetchOpts.credentials = "same-origin";
+    return fetchOpts;
+  }
+  function processPreload(link2) {
+    if (link2.ep)
+      return;
+    link2.ep = true;
+    const fetchOpts = getFetchOpts(link2);
+    fetch(link2.href, fetchOpts);
+  }
+})();
+class BaseComponent {
+  constructor(props, ...child) {
+    __publicField(this, "element");
+    __publicField(this, "child", []);
+    this.element = document.createElement(props.tag);
+    Object.assign(this.element, props);
+    if (child) {
+      this.appendChild(child);
+    }
+  }
+  append(child) {
+    this.child.push(child);
+    this.element.append(child.getElement());
+  }
+  appendChild(child) {
+    child.forEach((el) => {
+      this.append(el);
+    });
+  }
+  getElement() {
+    return this.element;
+  }
+  getChildren() {
+    return this.child;
+  }
+  destroy() {
+    this.destroyChild();
+    this.element.remove();
+  }
+  clear() {
+    this.element.innerHTML = "";
+  }
+  destroyChild() {
+    this.child.forEach((child) => child.destroy());
+    this.child = [];
+  }
+  clearChild() {
+    this.child = [];
+  }
+  getValue() {
+    let value = "";
+    if (this.element instanceof HTMLInputElement) {
+      value = this.element.value.trim();
+    }
+    return value;
+  }
+  setElementSrc(src) {
+    if (this.element instanceof HTMLImageElement) {
+      this.element.src = src;
+    }
+  }
+  addClass(classNameClassName) {
+    this.element.classList.add(classNameClassName);
+  }
+  toggleClass(classSurname) {
+    this.element.classList.toggle(classSurname);
+  }
+  removeClass(className) {
+    this.element.classList.remove(className);
+  }
+}
+const div = (props, ...children) => new BaseComponent({ ...props, tag: "div" }, ...children);
+const h1 = (className, textContent) => new BaseComponent({ tag: "h1", className, textContent });
+const h2 = (className, textContent) => new BaseComponent({ tag: "h2", className, textContent });
+const p = (className, textContent) => new BaseComponent({ tag: "p", className, textContent });
+const img = ({ src = "", alt = "", className = "", width = 0, height = 0 }) => new BaseComponent({
+  tag: "img",
+  className,
+  src,
+  alt,
+  width,
+  height
+});
+const a = (props, ...children) => new BaseComponent({ ...props, tag: "a" }, ...children);
+const span = (props, ...children) => new BaseComponent({ ...props, tag: "span" }, ...children);
+const button = "_button_jv81h_1";
+const styles = {
+  button
+};
+const Button = ({ textContent, onClick, className }) => new BaseComponent({
+  tag: "button",
+  className: `${styles.button} ${className || ""}`,
+  textContent,
+  onclick: (PreventDefault) => {
+    PreventDefault.preventDefault();
+    onClick == null ? void 0 : onClick();
+  }
+});
+const header = "_header_12uiy_1";
+const wrapper$3 = "_wrapper_12uiy_7";
+const logoWrapper = "_logoWrapper_12uiy_14";
+const logoutWrapper = "_logoutWrapper_12uiy_20";
+const linksWrapper = "_linksWrapper_12uiy_28";
+const link = "_link_12uiy_28";
+const linkText = "_linkText_12uiy_43";
+const logoGit = "_logoGit_12uiy_54";
+const logoRs = "_logoRs_12uiy_59";
+const logoutLink = "_logoutLink_12uiy_64";
+const logoutTittle = "_logoutTittle_12uiy_71";
+const logo = "_logo_12uiy_14";
+const user$1 = "_user_12uiy_81";
+const logoutIcon = "_logoutIcon_12uiy_86";
+const tittle$3 = "_tittle_12uiy_92";
+const classes$f = {
+  header,
+  wrapper: wrapper$3,
+  logoWrapper,
+  logoutWrapper,
+  linksWrapper,
+  link,
+  linkText,
+  logoGit,
+  logoRs,
+  logoutLink,
+  logoutTittle,
+  logo,
+  user: user$1,
+  logoutIcon,
+  tittle: tittle$3
+};
+class Header extends BaseComponent {
+  constructor(logoutCallback) {
+    super({ tag: "header", className: classes$f.header });
+    __publicField(this, "logoutBtn");
+    __publicField(this, "header");
+    __publicField(this, "logoutCallback");
+    this.logoutCallback = logoutCallback;
+    this.logoutBtn = a(
+      { className: classes$f.logoutLink, onclick: this.logoutCallback },
+      p(classes$f.logoutTittle, "Logout"),
+      img({ src: "img/logout.png", alt: "Logout", className: classes$f.logoutIcon })
+    );
+    this.header = div(
+      { className: classes$f.wrapper },
+      div(
+        { className: classes$f.logoWrapper },
+        img({ src: "img/Logo.png", alt: "Logo", className: classes$f.logo }),
+        h1(classes$f.tittle, `English 
+ puzzle`)
+      ),
+      div(
+        { className: classes$f.logoutWrapper },
+        img({ src: "img/User.png", alt: "User", className: classes$f.user }),
+        this.logoutBtn
+      ),
+      div(
+        { className: classes$f.linksWrapper },
+        a(
+          { className: classes$f.link, href: "https://github.com/YulikK", target: "_blank" },
+          img({ src: "img/git.png", alt: "GitHub", className: classes$f.logoGit, width: 24, height: 24 }),
+          span({ className: classes$f.linkText, textContent: "GitHub/YulikK" })
+        ),
+        a(
+          { className: classes$f.link, href: "https://rs.school/js/", target: "_blank" },
+          img({ src: "img/RS.png", alt: "RS School", className: classes$f.logoRs, width: 24, height: 24 }),
+          span({ className: classes$f.linkText, textContent: "RS School" })
+        )
+      )
+    );
+    this.appendChild([this.header]);
+  }
+}
+const WELCOME_DESCRIPTION = "Welcome to the world of English and art! Improve your English skills by collecting sentences and uncovering pictures of art. Ready for a challenge? Immerse yourself in the world of words and art with us!";
+const CONFIRM_LOGOUT = "Information about the user and his progress will be deleted. Continue?";
+const STORE_PREFIX = `RSS_Puzzle_Yulik`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+const STORE_USER = `user`;
+const STORE_OPTIONS = `options`;
+const STORE_LAST_LESSON = `last_lesson`;
+const STORE_HISTORY = `history`;
+const MIN_LENGTH_FIRST_NAME = 3;
+const MIN_LENGTH_LAST_NAME = 4;
+const URL = "https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/";
+const TAIL = 14 * 100 / 280 / 100;
+const pageWrapper = "_pageWrapper_1vp8h_1";
+const welcomePage = "_welcomePage_1vp8h_5";
+const wrapper$2 = "_wrapper_1vp8h_16";
+const tittle$2 = "_tittle_1vp8h_25";
+const description$1 = "_description_1vp8h_35";
+const start = "_start_1vp8h_45";
+const classes$e = {
+  pageWrapper,
+  welcomePage,
+  wrapper: wrapper$2,
+  tittle: tittle$2,
+  description: description$1,
+  start
+};
+class Welcome extends BaseComponent {
+  constructor(user2, logoutCallback, startCallback) {
+    super({ tag: "div", className: classes$e.pageWrapper });
+    __publicField(this, "startBtn");
+    __publicField(this, "modal");
+    __publicField(this, "header");
+    __publicField(this, "startCallback");
+    this.header = new Header(logoutCallback);
+    this.startCallback = startCallback;
+    const userName = user2.getFullName();
+    this.startBtn = Button({
+      textContent: "Start",
+      onClick: () => {
+        this.startCallback();
+      },
+      className: classes$e.start
+    });
+    this.modal = div(
+      { className: classes$e.welcomePage },
+      div(
+        { className: classes$e.wrapper },
+        h2(classes$e.tittle, `Dear, ${userName}!`),
+        p(classes$e.description, WELCOME_DESCRIPTION),
+        this.startBtn
+      )
+    );
+    this.appendChild([this.header, this.modal]);
+  }
+}
+var HintName = /* @__PURE__ */ ((HintName2) => {
+  HintName2["onSound"] = "onSound";
+  HintName2["onTranslate"] = "onTranslate";
+  HintName2["onPicture"] = "onPicture";
+  return HintName2;
+})(HintName || {});
+var FieldName = /* @__PURE__ */ ((FieldName2) => {
+  FieldName2["firstName"] = "firstName";
+  FieldName2["lastName"] = "lastName";
+  return FieldName2;
+})(FieldName || {});
+function getValidationConstant(field) {
+  const regexAll = /^[a-zA-Z-]*$/;
+  const regexFirst = /^[A-Z][a-zA-Z-]*$/;
+  let message = "";
+  let minLength = 0;
+  if (field === FieldName.firstName) {
+    message = "First name";
+    minLength = MIN_LENGTH_FIRST_NAME;
+  } else if (field === FieldName.lastName) {
+    message = "Last name";
+    minLength = MIN_LENGTH_LAST_NAME;
+  }
+  return { message, minLength, regexAll, regexFirst };
+}
+function validateField(value, field) {
+  const validation = {
+    isValid: false,
+    error: ""
+  };
+  const { message, minLength, regexAll, regexFirst } = getValidationConstant(field);
+  if (value.length < minLength) {
+    validation.error = `${message} must be at least ${minLength} characters long`;
+  } else if (!regexAll.test(value)) {
+    validation.error = `${message} must contain only letters and hyphens`;
+  } else if (!regexFirst.test(value)) {
+    validation.error = `${message} must start with a capital letter`;
+  } else {
+    validation.isValid = true;
+  }
+  return validation;
+}
+function isOptionsType(entity) {
+  return Boolean(
+    typeof entity === "object" && entity && "onSound" in entity && typeof entity.onSound === "boolean" && "onTranslate" in entity && typeof entity.onTranslate === "boolean" && "onPicture" in entity && typeof entity.onPicture === "boolean"
+  );
+}
+function isUserType(entity) {
+  return Boolean(
+    typeof entity === "object" && entity && "firstName" in entity && typeof entity.firstName === "string" && "lastName" in entity && typeof entity.lastName === "string"
+  );
+}
+function isLessonType(entity) {
+  return Boolean(
+    typeof entity === "object" && Array.isArray(entity) && entity && entity.length > 0 && "levelData" in entity[0] && "words" in entity[0]
+  );
+}
+const input$1 = "_input_14dbk_1";
+const success$1 = "_success_14dbk_9";
+const error$1 = "_error_14dbk_12";
+const errorMessage = "_errorMessage_14dbk_26";
+const classes$d = {
+  input: input$1,
+  success: success$1,
+  error: error$1,
+  errorMessage
+};
+class Input extends BaseComponent {
+  constructor({ id, type, placeholder, className, errorContainer: errorContainer2 }) {
+    super({ tag: "input", id, type, placeholder, className: `${classes$d.input} ${className || ""}` });
+    __publicField(this, "errorContainer");
+    __publicField(this, "id");
+    __publicField(this, "onChange", (event) => {
+      event.preventDefault();
+      this.validate();
+    });
+    __publicField(this, "validate", () => {
+      const value = this.getValue();
+      const validationResult = validateField(value, this.id);
+      if (validationResult.isValid) {
+        this.setSuccess();
+      } else {
+        this.setError(validationResult.error);
+      }
+      return validationResult.isValid;
+    });
+    this.id = id;
+    this.errorContainer = errorContainer2;
+    this.element.addEventListener("change", this.onChange);
+  }
+  isValid() {
+    return this.validate();
+  }
+  setError(error2) {
+    this.errorContainer.getElement().innerHTML = "";
+    this.errorContainer.append(p(classes$d.errorMessage, error2));
+    this.addClass(classes$d.error);
+    this.removeClass(classes$d.success);
+  }
+  setSuccess() {
+    this.errorContainer.getElement().innerHTML = "";
+    this.addClass(classes$d.success);
+    this.removeClass(classes$d.error);
+  }
+}
+const authPage = "_authPage_1c83x_1";
+const wrapper$1 = "_wrapper_1c83x_12";
+const tittle$1 = "_tittle_1c83x_21";
+const errorContainer = "_errorContainer_1c83x_31";
+const inputWrapper = "_inputWrapper_1c83x_40";
+const login = "_login_1c83x_45";
+const classes$c = {
+  authPage,
+  wrapper: wrapper$1,
+  tittle: tittle$1,
+  errorContainer,
+  inputWrapper,
+  login
+};
+class Auth extends BaseComponent {
+  constructor(user2, loginCallback) {
+    super({ tag: "form", className: classes$c.authPage, id: "auth" });
+    __publicField(this, "loginBtn");
+    __publicField(this, "modal");
+    __publicField(this, "user");
+    __publicField(this, "firstName");
+    __publicField(this, "lastName");
+    __publicField(this, "errorsContainer");
+    __publicField(this, "loginCallback");
+    __publicField(this, "login", () => {
+      if (this.validateForm()) {
+        this.updateUser();
+        this.loginCallback();
+      }
+    });
+    __publicField(this, "validateForm", () => this.firstName.isValid() && this.lastName.isValid());
+    this.user = user2;
+    this.loginCallback = loginCallback;
+    this.loginBtn = Button({
+      textContent: "Login",
+      onClick: this.login,
+      className: classes$c.login
+    });
+    this.errorsContainer = {
+      firstName: div({ className: classes$c.errorContainer }),
+      lastName: div({ className: classes$c.errorContainer })
+    };
+    this.firstName = new Input({ id: FieldName.firstName, type: "text", placeholder: "First name", errorContainer: this.errorsContainer.firstName });
+    this.lastName = new Input({ id: FieldName.lastName, type: "text", placeholder: "Last name", errorContainer: this.errorsContainer.lastName });
+    this.modal = div(
+      { className: classes$c.wrapper },
+      h2(classes$c.tittle, "User Login"),
+      div(
+        { className: classes$c.inputWrapper },
+        this.firstName,
+        this.errorsContainer.firstName
+      ),
+      div(
+        { className: classes$c.inputWrapper },
+        this.lastName,
+        this.errorsContainer.lastName
+      ),
+      this.loginBtn
+    );
+    this.appendChild([this.modal]);
+  }
+  updateUser() {
+    const firstName = this.firstName.getValue();
+    const lastName = this.lastName.getValue();
+    this.user.setName(firstName, lastName);
+  }
+}
+const startPage$1 = "_startPage_1vn9e_1";
+const classes$b = {
+  startPage: startPage$1
+};
+class StartPage extends BaseComponent {
+  constructor(container2, user2, startGameCallback, logoutCallback) {
+    super({ tag: "div", className: classes$b.startPage });
+    __publicField(this, "container");
+    __publicField(this, "welcomeComponent", null);
+    __publicField(this, "authComponent", null);
+    __publicField(this, "user");
+    __publicField(this, "startGameCallback");
+    __publicField(this, "logoutCallback");
+    __publicField(this, "logoutClick", () => {
+      this.logoutCallback();
+    });
+    __publicField(this, "login", () => {
+      this.clearContainer();
+      this.showWelcome();
+    });
+    this.container = container2;
+    this.startGameCallback = startGameCallback;
+    this.logoutCallback = logoutCallback;
+    this.user = user2;
+  }
+  initApp() {
+    if (!this.user.isEmpty()) {
+      this.showWelcome();
+    } else {
+      this.showAuth();
+    }
+  }
+  logout() {
+    this.clearContainer();
+    this.showAuth();
+  }
+  showAuth() {
+    this.authComponent = new Auth(this.user, this.login);
+    this.appendChild([this.authComponent]);
+    this.container.append(this.element);
+  }
+  clearContainer() {
+    this.destroyChild();
+  }
+  showWelcome() {
+    this.welcomeComponent = new Welcome(this.user, this.logoutClick, this.startGameCallback);
+    this.appendChild([this.welcomeComponent]);
+    this.container.append(this.element);
+  }
+}
+const background$1 = "_background_qpqeh_1";
+const chose = "_chose_qpqeh_11";
+const close = "_close_qpqeh_25";
+const buttonWrap = "_buttonWrap_qpqeh_34";
+const level$1 = "_level_qpqeh_39";
+const lessonsContainer = "_lessonsContainer_qpqeh_48";
+const lesson = "_lesson_qpqeh_48";
+const image = "_image_qpqeh_67";
+const noImage = "_noImage_qpqeh_72";
+const lessonName = "_lessonName_qpqeh_77";
+const levelTittle = "_levelTittle_qpqeh_86";
+const lessonsWrap = "_lessonsWrap_qpqeh_94";
+const classes$a = {
+  background: background$1,
+  chose,
+  close,
+  buttonWrap,
+  level: level$1,
+  lessonsContainer,
+  lesson,
+  image,
+  noImage,
+  lessonName,
+  levelTittle,
+  lessonsWrap
+};
+class Chose extends BaseComponent {
+  constructor(lessons, callback) {
+    super({ tag: "div", className: classes$a.background });
+    __publicField(this, "container");
+    __publicField(this, "lessons");
+    __publicField(this, "closeButton");
+    __publicField(this, "callback", null);
+    __publicField(this, "onCloseClick", () => {
+      this.destroy();
+    });
+    __publicField(this, "onLessonClick", (evt) => {
+      const target = evt.currentTarget;
+      if (target instanceof HTMLElement && target.classList.contains(classes$a.lesson)) {
+        const lessonId = target.dataset.lvlId;
+        if (lessonId) {
+          this.lessons.setLesson(lessonId);
+          this.destroy();
+          if (this.callback) {
+            this.callback();
+          }
+        }
+      }
+    });
+    this.container = document.body;
+    this.lessons = lessons;
+    this.callback = callback;
+    this.closeButton = Button({ textContent: "X", onClick: this.onCloseClick, className: classes$a.close });
+    const lessonList = this.makeLessonList();
+    const modal2 = div({ className: classes$a.chose });
+    modal2.appendChild([div(
+      { className: classes$a.buttonWrap },
+      this.closeButton
+    )]);
+    modal2.appendChild(lessonList);
+    this.appendChild([modal2]);
+  }
+  init() {
+    this.container.append(this.getElement());
+  }
+  makeLessonList() {
+    const elements = [];
+    const lessons = this.lessons.getLessons();
+    const history = this.lessons.getHistory();
+    let currentLevel = "";
+    let lessonsContainer2 = null;
+    lessons.forEach((lesson2) => {
+      const levelId = lesson2.levelData.id.split("_")[0];
+      const lessonNumber = lesson2.levelData.id.split("_")[1];
+      if (levelId && levelId !== currentLevel) {
+        currentLevel = levelId;
+        const level2 = div({ className: classes$a.level }, p(classes$a.levelTittle, `Level ${levelId}`));
+        lessonsContainer2 = div({ className: classes$a.lessonsContainer });
+        elements.push(level2);
+        elements.push(lessonsContainer2);
+      }
+      if (lessonsContainer2) {
+        const isDone = history.find((historyLesson) => historyLesson.levelData.id === lesson2.levelData.id);
+        const lessonItem = a(
+          { className: classes$a.lesson },
+          isDone ? img({ src: `${URL}images/${lesson2.levelData.cutSrc}`, alt: `lesson ${lesson2.levelData.id}`, className: classes$a.image, width: 90, height: 60 }) : img({ src: `img/no-img.png`, alt: `lesson ${lesson2.levelData.id}`, className: classes$a.noImage, width: 50, height: 50 }),
+          p(classes$a.lessonName, `Lesson ${lessonNumber}`)
+        );
+        lessonItem.getElement().dataset.lvlId = lesson2.levelData.id;
+        lessonItem.getElement().addEventListener("click", this.onLessonClick);
+        lessonsContainer2.appendChild([lessonItem]);
+      }
+    });
+    return elements;
+  }
+}
+const hide$2 = "_hide_1v6hh_1";
+const progressWrapper = "_progressWrapper_1v6hh_6";
+const progressBar = "_progressBar_1v6hh_12";
+const progressCircle = "_progressCircle_1v6hh_18";
+const progressInformation = "_progressInformation_1v6hh_36";
+const level = "_level_1v6hh_47";
+const round = "_round_1v6hh_57";
+const classes$9 = {
+  hide: hide$2,
+  progressWrapper,
+  progressBar,
+  progressCircle,
+  progressInformation,
+  level,
+  round
+};
+const LVL_TXT = "Lvl";
+class ProgressBar extends BaseComponent {
+  constructor(container2, lesson2) {
+    var _a, _b;
+    super({ tag: "div", className: classes$9.progressWrapper });
+    __publicField(this, "container");
+    __publicField(this, "progressLine");
+    __publicField(this, "progressCircle");
+    __publicField(this, "level");
+    __publicField(this, "round");
+    __publicField(this, "lessons");
+    __publicField(this, "chooseLessonCallback", null);
+    __publicField(this, "onChooseCallback", () => {
+      this.updateInfo();
+      if (this.chooseLessonCallback) {
+        this.chooseLessonCallback();
+      }
+    });
+    __publicField(this, "onClick", () => {
+      const choseModal = new Chose(this.lessons, this.onChooseCallback);
+      choseModal.init();
+    });
+    this.container = container2;
+    this.lessons = lesson2;
+    const levelNumber = ((_a = this.lessons.getCurrentLesson()) == null ? void 0 : _a.levelData.id.split("_")[0]) || "";
+    const lessonNumber = ((_b = this.lessons.getCurrentLesson()) == null ? void 0 : _b.levelData.id.split("_")[1]) || "";
+    const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
+    this.level = p(classes$9.level, `${LVL_TXT} ${levelNumber}`);
+    this.round = p(classes$9.round, `${lessonNumber} / ${lessonCount}`);
+    this.progressCircle = div(
+      { className: classes$9.progressCircle },
+      div(
+        { className: classes$9.progressInformation },
+        this.level,
+        this.round
+      )
+    );
+    this.progressLine = div(
+      { className: classes$9.progressBar },
+      this.progressCircle
+    );
+    this.appendChild([this.progressLine]);
+    this.container.append(this);
+    this.progressCircle.getElement().addEventListener("click", this.onClick);
+  }
+  setChooseLessonCallback(callback) {
+    this.chooseLessonCallback = callback;
+  }
+  updateInfo() {
+    var _a, _b;
+    const levelNumber = ((_a = this.lessons.getCurrentLesson()) == null ? void 0 : _a.levelData.id.split("_")[0]) || "";
+    const lessonNumber = ((_b = this.lessons.getCurrentLesson()) == null ? void 0 : _b.levelData.id.split("_")[1]) || "";
+    const lessonCount = this.lessons.getCountLessonsInLevel(levelNumber);
+    this.level.getElement().textContent = `${LVL_TXT} ${levelNumber}`;
+    this.round.getElement().textContent = `${lessonNumber} / ${lessonCount}`;
+  }
+  hide() {
+    this.addClass(classes$9.hide);
+  }
+  show() {
+    this.removeClass(classes$9.hide);
+  }
+}
+const input = "_input_1nnox_1";
+const optionWrap = "_optionWrap_1nnox_6";
+const label = "_label_1nnox_10";
+const onSound = "_onSound_1nnox_20";
+const onTranslate = "_onTranslate_1nnox_28";
+const onPicture = "_onPicture_1nnox_36";
+const classes$8 = {
+  input,
+  optionWrap,
+  label,
+  onSound,
+  onTranslate,
+  onPicture
+};
+class Checkbox extends BaseComponent {
+  constructor(id, options2, changeCallback) {
+    super({ tag: "div", className: classes$8.optionWrap });
+    __publicField(this, "options");
+    __publicField(this, "id");
+    __publicField(this, "input");
+    __publicField(this, "label");
+    __publicField(this, "changeCallback");
+    __publicField(this, "onChange", (evt) => {
+      if (evt.target instanceof HTMLInputElement) {
+        this.options.setOption(this.id, evt.target.checked);
+        this.changeCallback(this.id);
+      }
+    });
+    this.options = options2;
+    this.changeCallback = changeCallback;
+    this.id = id;
+    this.input = new BaseComponent({ tag: "input", id, type: "checkbox", className: classes$8.input, onchange: this.onChange, checked: this.options.getOptions(this.id) });
+    this.label = new BaseComponent({ tag: "label", className: `${classes$8.label} ${classes$8[this.id]}`, htmlFor: this.id });
+    this.appendChild([this.input, this.label]);
+  }
+}
+const sound = "_sound_ztmso_1";
+const soundImg = "_soundImg_ztmso_10";
+const disable = "_disable_ztmso_15";
+const classes$7 = {
+  sound,
+  soundImg,
+  disable
+};
+class Play extends BaseComponent {
+  constructor() {
+    super({ tag: "a", className: classes$7.sound });
+    __publicField(this, "audio");
+    __publicField(this, "src", "");
+    __publicField(this, "image");
+    __publicField(this, "onClick", async () => {
+      try {
+        await this.audio.play();
+      } catch (error2) {
+        this.image.addClass(classes$7.disable);
+      }
+    });
+    __publicField(this, "onLoad", () => {
+      this.image.removeClass(classes$7.disable);
+    });
+    this.image = img({ src: "img/hint-sound.png", alt: "play sound hint", className: `${classes$7.soundImg} ${classes$7.disable}`, width: 24, height: 24 });
+    this.append(this.image);
+    this.element.onclick = this.onClick;
+    this.audio = new Audio();
+    this.audio.onplay = () => this.image.setElementSrc("img/hint-sound-play.png");
+    this.audio.onended = () => this.image.setElementSrc("img/hint-sound.png");
+    this.audio.addEventListener("canplaythrough", this.onLoad);
+  }
+  setFile(src) {
+    this.src = src;
+    this.audio.src = `${URL}${this.src}`;
+    this.audio.load();
+  }
+}
+const hide$1 = "_hide_11zal_1";
+const text$2 = "_text_11zal_6";
+const hintOptions = "_hintOptions_11zal_18";
+const hint = "_hint_11zal_18";
+const hintContainer$1 = "_hintContainer_11zal_34";
+const hintOptionsContainer = "_hintOptionsContainer_11zal_41";
+const classes$6 = {
+  hide: hide$1,
+  text: text$2,
+  hintOptions,
+  hint,
+  hintContainer: hintContainer$1,
+  hintOptionsContainer
+};
+class Hint extends BaseComponent {
+  constructor(container2, options2, lessons) {
+    super({ tag: "div", className: classes$6.hint });
+    __publicField(this, "container");
+    __publicField(this, "options");
+    __publicField(this, "soundComponent");
+    __publicField(this, "translateComponent");
+    __publicField(this, "pictureComponent");
+    __publicField(this, "hintSound");
+    __publicField(this, "hintTranslate");
+    __publicField(this, "lessons");
+    __publicField(this, "onChangePictureOption", null);
+    __publicField(this, "changeOptionsHandler", (id) => {
+      if (id === HintName.onSound) {
+        this.updateSoundHint();
+      } else if (id === HintName.onTranslate) {
+        this.updateTranslateHint();
+      } else if (id === HintName.onPicture) {
+        if (this.onChangePictureOption) {
+          this.onChangePictureOption(this.options.getOptions(HintName.onPicture));
+        }
+      }
+    });
+    this.container = container2;
+    this.options = options2;
+    this.lessons = lessons;
+    this.soundComponent = new Checkbox(HintName.onSound, this.options, this.changeOptionsHandler);
+    this.translateComponent = new Checkbox(HintName.onTranslate, this.options, this.changeOptionsHandler);
+    this.pictureComponent = new Checkbox(HintName.onPicture, this.options, this.changeOptionsHandler);
+    this.hintSound = new Play();
+    this.hintTranslate = p(classes$6.text, "");
+    this.updatesTextTranslate();
+    this.updatePlayFile();
+    this.updateTranslateHint();
+    this.updateSoundHint();
+    this.appendChild([
+      div(
+        { className: classes$6.hintContainer },
+        this.hintSound,
+        this.hintTranslate
+      ),
+      div(
+        { className: classes$6.hintOptionsContainer },
+        this.translateComponent,
+        this.pictureComponent,
+        this.soundComponent
+      )
+    ]);
+    this.container.appendChild([this]);
+  }
+  updatesTextTranslate() {
+    this.hintTranslate.getElement().textContent = this.lessons.getTranslate();
+  }
+  updatePlayFile() {
+    this.hintSound.setFile(this.lessons.getAudioFile());
+  }
+  getOptions() {
+    return [
+      this.translateComponent,
+      this.pictureComponent,
+      this.soundComponent
+    ];
+  }
+  getHint() {
+    const hintArr = [];
+    if (this.hintSound) {
+      hintArr.push(this.hintSound);
+    }
+    if (this.hintTranslate) {
+      hintArr.push(this.hintTranslate);
+    }
+    return hintArr;
+  }
+  setOnPictureCallback(callback) {
+    this.onChangePictureOption = callback;
+  }
+  showAllHints() {
+    this.hintSound.removeClass(classes$6.hide);
+    this.hintTranslate.removeClass(classes$6.hide);
+  }
+  startNewLesson() {
+    this.updatesTextTranslate();
+    this.updatePlayFile();
+    this.updateSoundHint();
+    this.updateTranslateHint();
+  }
+  updateSoundHint() {
+    if (this.options.items.onSound) {
+      this.hintSound.removeClass(classes$6.hide);
+    } else {
+      this.hintSound.addClass(classes$6.hide);
+    }
+  }
+  updateTranslateHint() {
+    if (this.options.items.onTranslate) {
+      this.hintTranslate.removeClass(classes$6.hide);
+    } else {
+      this.hintTranslate.addClass(classes$6.hide);
+    }
+  }
+  hide() {
+    this.addClass(classes$6.hide);
+  }
+  show() {
+    this.removeClass(classes$6.hide);
+  }
+}
+const showPicture = "_showPicture_kzwah_9";
+const ShowPictureAnimation = "_ShowPictureAnimation_kzwah_1";
+const line = "_line_kzwah_14";
+const pictureLine = "_pictureLine_kzwah_23";
+const container = "_container_kzwah_32";
+const choose = "_choose_kzwah_44";
+const success = "_success_kzwah_49";
+const error = "_error_kzwah_53";
+const classes$5 = {
+  showPicture,
+  ShowPictureAnimation,
+  line,
+  pictureLine,
+  container,
+  choose,
+  success,
+  error
+};
+class Box {
+  constructor(answerContainer, sourcesContainer) {
+    __publicField(this, "answerContainer");
+    __publicField(this, "sourcesContainer");
+    __publicField(this, "answerLine", null);
+    __publicField(this, "sourceLine", null);
+    __publicField(this, "overElement", null);
+    __publicField(this, "answer", []);
+    __publicField(this, "fixAnswer", []);
+    __publicField(this, "source", []);
+    __publicField(this, "onDragOver", (event) => {
+      event.preventDefault();
+      if (event.target && event.target instanceof HTMLElement) {
+        const { target } = event;
+        this.overElement = target.closest(`.${classes$5.container}`);
+        if (this.overElement) {
+          this.overElement.classList.add(classes$5.choose);
+        }
+      }
+    });
+    __publicField(this, "onDragLeave", () => {
+      if (this.overElement) {
+        this.overElement.classList.remove(classes$5.choose);
+        this.overElement = null;
+      }
+    });
+    this.answerContainer = answerContainer;
+    this.sourcesContainer = sourcesContainer;
+    this.makeSourceLine();
+  }
+  renderRound(width, height, lineId, wordCount) {
+    this.makeAnswerLine(height);
+    if (this.sourceLine) {
+      this.sourceLine.getElement().style.height = `${height}px`;
+    }
+    for (let word = 0; word < wordCount; word += 1) {
+      const widthElement = Math.round(width / wordCount) + wordCount * 0.1;
+      this.fillLines(lineId, word, widthElement, height);
+    }
+  }
+  makeAnswerLine(height) {
+    this.answerLine = div({ className: `${classes$5.pictureLine}`, height });
+    this.answerContainer.appendChild([this.answerLine]);
+  }
+  makeSourceLine() {
+    this.sourceLine = div({ className: classes$5.line });
+    this.sourcesContainer.appendChild([this.sourceLine]);
+  }
+  createEmptyBlock(line2, word, width, height) {
+    const newBlock = div({
+      id: `sources-${line2}-${word}`,
+      className: classes$5.container,
+      ondragover: this.onDragOver,
+      ondragleave: this.onDragLeave
+    });
+    if (width) {
+      const margin = word === 0 ? 0 : width * 0.05;
+      newBlock.getElement().style.width = `${width}px`;
+      newBlock.getElement().style.height = `${height}px`;
+      newBlock.getElement().style.marginLeft = `-${margin}px`;
+    }
+    return newBlock;
+  }
+  fillLines(line2, word, width, height) {
+    var _a, _b;
+    const emptyBlockSource = this.createEmptyBlock(line2, word, width, height);
+    this.source.push(emptyBlockSource);
+    (_a = this.sourceLine) == null ? void 0 : _a.append(emptyBlockSource);
+    const emptyBlockPict = this.createEmptyBlock(line2, word, width, height);
+    this.answer.push(emptyBlockPict);
+    (_b = this.answerLine) == null ? void 0 : _b.append(emptyBlockPict);
+  }
+  fixLine() {
+    var _a;
+    this.fixAnswer.push(this.answer);
+    this.answer.forEach((block2) => {
+      const blockElement = block2.getElement();
+      blockElement.ondragover = null;
+      blockElement.ondragleave = null;
+    });
+    this.source.forEach((block2) => {
+      block2.destroy();
+    });
+    (_a = this.sourceLine) == null ? void 0 : _a.destroyChild();
+    this.source = [];
+    this.answer = [];
+  }
+  showAnswer(puzzles) {
+    puzzles.forEach((puzzle, index) => {
+      const answerBlock = this.answer[index];
+      if (answerBlock) {
+        answerBlock.clear();
+        answerBlock.clearChild();
+        answerBlock.appendChild([puzzle]);
+      }
+      const sourcesBlock = this.source[index];
+      if (sourcesBlock) {
+        sourcesBlock.clear();
+        sourcesBlock.clearChild();
+      }
+    });
+  }
+  movePuzzleToFirstEmpty(puzzle) {
+    const startArea = this.findStartArea(puzzle);
+    const puzzleContainer2 = findPuzzleContainer(startArea, puzzle);
+    const emptyContainer = this.findEmptyContainer(startArea === this.source ? "answer" : "source");
+    if (puzzleContainer2 && emptyContainer) {
+      puzzleContainer2.clearChild();
+      emptyContainer.append(puzzle);
+    }
+  }
+  movePuzzleToOverContainer(puzzle) {
+    if (this.overElement) {
+      const startArea = this.findStartArea(puzzle);
+      const formContainer = findPuzzleContainer(startArea, puzzle);
+      const toContainer = this.findContainer(this.overElement);
+      if (formContainer && toContainer) {
+        const puzzleForSwap = toContainer.getElement().firstChild;
+        if (puzzleForSwap && puzzleForSwap instanceof HTMLElement) {
+          toContainer.clearChild();
+          formContainer.clearChild();
+          toContainer.append(puzzle);
+          formContainer.getElement().append(puzzleForSwap);
+        } else {
+          formContainer.clearChild();
+          toContainer.append(puzzle);
+        }
+        this.overElement = null;
+      }
+    }
+    this.setDefaultStyles();
+  }
+  setDefaultStyles() {
+    this.answer.forEach((block2) => {
+      block2.removeClass(classes$5.choose);
+    });
+    this.source.forEach((block2) => {
+      block2.removeClass(classes$5.choose);
+    });
+  }
+  findStartArea(puzzle) {
+    const isSource = this.findPuzzleInArea("source", puzzle);
+    return isSource ? this.source : this.answer;
+  }
+  findPuzzleInArea(area, puzzle) {
+    const block2 = this[area].find((element) => {
+      const child = element.getElement().firstChild;
+      if (child) {
+        return child === puzzle.getElement();
+      }
+      return false;
+    });
+    return !!block2;
+  }
+  findEmptyContainer(area) {
+    return this[area].find((block2) => {
+      const child = block2.getElement().firstChild;
+      return !child;
+    });
+  }
+  findContainer(container2) {
+    return this.source.find((block2) => block2.getElement() === container2) || this.answer.find((block2) => block2.getElement() === container2);
+  }
+  isCorrectAnswer() {
+    let isWin = true;
+    this.answer.forEach((block2, index) => {
+      const childBlock = block2.getElement().firstChild;
+      if (childBlock && childBlock instanceof HTMLElement) {
+        const idStr = childBlock.id.split("-")[2];
+        const id = idStr ? parseInt(idStr, 10) : null;
+        if (index !== id) {
+          isWin = false;
+          block2.addClass(classes$5.error);
+        } else {
+          block2.addClass(classes$5.success);
+        }
+      }
+    });
+    return isWin;
+  }
+  hideMark() {
+    this.fixAnswer.forEach((line2) => {
+      line2.forEach((block2) => {
+        block2.removeClass(classes$5.error);
+        block2.removeClass(classes$5.success);
+      });
+    });
+    this.answer.forEach((block2) => {
+      block2.removeClass(classes$5.error);
+      block2.removeClass(classes$5.success);
+    });
+  }
+  isComplete() {
+    let complete = true;
+    this.source.forEach((block2) => {
+      if (block2.getElement().firstChild) {
+        complete = false;
+      }
+    });
+    return complete;
+  }
+  showPicture() {
+    const line2 = this.answerContainer.getElement().querySelectorAll(`.${classes$5.pictureLine}`);
+    line2.forEach((block2) => {
+      block2.classList.add(classes$5.showPicture);
+    });
+    const blockPicture = this.answerContainer.getElement().querySelectorAll(`.${classes$5.container}`);
+    blockPicture.forEach((block2) => {
+      block2.classList.add(classes$5.showPicture);
+    });
+  }
+  clearFixElements() {
+    this.fixAnswer = [];
+  }
+  resize(width, height) {
+    if (this.answerLine && this.sourceLine) {
+      this.answerLine.getElement().style.height = `${height}px`;
+      this.sourceLine.getElement().style.height = `${height}px`;
+    }
+    this.fixAnswer.forEach((line2) => {
+      const countElement2 = line2.length;
+      const widthElement2 = Math.round(width / countElement2) + countElement2 * 0.1;
+      line2.forEach((block2, index) => {
+        const blockElement = block2.getElement();
+        blockElement.style.width = `${widthElement2}px`;
+        blockElement.style.height = `${height}px`;
+        const margin = index === 0 ? 0 : widthElement2 * TAIL;
+        blockElement.style.marginLeft = `-${margin}px`;
+      });
+    });
+    const countElement = this.answer.length;
+    const widthElement = Math.round(width / countElement) + countElement * 0.1;
+    this.answer.forEach((block2, index) => {
+      const blockElement = block2.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      const margin = index === 0 ? 0 : widthElement * TAIL;
+      blockElement.style.marginLeft = `-${margin}px`;
+    });
+    this.source.forEach((block2, index) => {
+      const blockElement = block2.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      const margin = index === 0 ? 0 : widthElement * TAIL;
+      blockElement.style.marginLeft = `-${margin}px`;
+    });
+  }
+}
+function findPuzzleContainer(group, puzzle) {
+  return group.find((block2) => {
+    const child = block2.getElement().firstChild;
+    if (child) {
+      return child === puzzle.getElement();
+    }
+    return false;
+  });
+}
+const text$1 = "_text_1f3xk_1";
+const block = "_block_1f3xk_14";
+const dragging = "_dragging_1f3xk_14";
+const puzzleFirst = "_puzzleFirst_1f3xk_27";
+const puzzleInside = "_puzzleInside_1f3xk_31";
+const puzzleLast = "_puzzleLast_1f3xk_35";
+const classes$4 = {
+  text: text$1,
+  block,
+  dragging,
+  puzzleFirst,
+  puzzleInside,
+  puzzleLast
+};
+class Puzzle {
+  constructor(image2, showOption, puzzleClickCallback, dragStartCallback, dargEndCallback) {
+    __publicField(this, "elements", []);
+    __publicField(this, "fixElements", []);
+    __publicField(this, "image");
+    __publicField(this, "showOption");
+    __publicField(this, "dragging", null);
+    __publicField(this, "puzzleClickCallback");
+    __publicField(this, "dragStartCallback");
+    __publicField(this, "dargEndCallback");
+    __publicField(this, "backgroundToggle", (value) => {
+      this.showOption = value;
+      this.elements.forEach((puzzle) => {
+        const puzzleElement = puzzle.getElement();
+        puzzleElement.style.backgroundImage = value ? `url(${this.image.src})` : "none";
+      });
+    });
+    __publicField(this, "onPuzzleClick", (event) => {
+      if (event.currentTarget && event.currentTarget instanceof HTMLElement) {
+        const idEl = event.currentTarget.id.split("-")[2];
+        const currentPuzzle = this.elements[parseInt(idEl, 10)];
+        this.puzzleClickCallback(currentPuzzle);
+      }
+    });
+    __publicField(this, "dragStart", (event) => {
+      if (event.dataTransfer && event.target && event.target instanceof HTMLElement) {
+        const idEl = event.target.id.split("-")[2];
+        const currentBlock = this.elements[parseInt(idEl, 10)];
+        if (currentBlock) {
+          this.dragging = currentBlock;
+          setTimeout(() => currentBlock == null ? void 0 : currentBlock.addClass(classes$4.dragging), 0);
+        }
+      }
+      this.dragStartCallback();
+    });
+    __publicField(this, "dragEnd", () => {
+      if (this.dragging) {
+        this.dargEndCallback(this.dragging);
+        this.dragging.removeClass(classes$4.dragging);
+        this.dragging = null;
+      }
+    });
+    this.image = image2;
+    this.showOption = showOption;
+    this.puzzleClickCallback = puzzleClickCallback;
+    this.dragStartCallback = dragStartCallback;
+    this.dargEndCallback = dargEndCallback;
+  }
+  createPuzzle(width, height, line2, wordCount, sentence2) {
+    for (let word = 0; word < wordCount; word += 1) {
+      const widthElement = Math.round(width / wordCount) + wordCount * 0.1;
+      this.makeElement(line2, word, wordCount, widthElement, height, sentence2[word]);
+    }
+  }
+  makeElement(line2, word, wordCount, width, height, text2) {
+    let puzzleForm = classes$4.puzzleInside;
+    if (word === 0) {
+      puzzleForm = classes$4.puzzleFirst;
+    }
+    if (word === wordCount - 1) {
+      puzzleForm = classes$4.puzzleLast;
+    }
+    const block2 = div(
+      {
+        id: `bl-${line2}-${word}`,
+        className: `${classes$4.block} ${puzzleForm}`,
+        draggable: true,
+        ondragstart: this.dragStart,
+        ondragend: this.dragEnd,
+        onclick: this.onPuzzleClick
+      },
+      span({ className: classes$4.text, textContent: text2 })
+    );
+    const element = block2.getElement();
+    element.style.backgroundImage = this.showOption ? `url(${this.image.src})` : "none";
+    element.style.backgroundPosition = `-${word * width}px -${line2 * height}px`;
+    element.style.width = `${width}px`;
+    element.style.height = `${height}px`;
+    element.style.maskSize = `${width}px ${height}px`;
+    this.elements.push(block2);
+  }
+  fixLine() {
+    this.fixElements.push(this.elements);
+    this.elements.forEach((block2) => {
+      const blockElement = block2.getElement();
+      blockElement.ondragstart = null;
+      blockElement.ondragend = null;
+      blockElement.onclick = null;
+      blockElement.draggable = false;
+    });
+    this.elements = [];
+  }
+  showBackground() {
+    this.elements.forEach((puzzle) => {
+      const blockElement = puzzle.getElement();
+      blockElement.style.backgroundImage = `url(${this.image.src})`;
+    });
+  }
+  getElements() {
+    return this.elements;
+  }
+  clearFixElements() {
+    this.fixElements = [];
+  }
+  resize(width, height) {
+    this.fixElements.forEach((line2) => {
+      const countElement = line2.length;
+      const widthElement2 = Math.round(width / countElement) + countElement * 0.1;
+      line2.forEach((block2) => {
+        const blockElement = block2.getElement();
+        blockElement.style.width = `${widthElement2}px`;
+        blockElement.style.height = `${height}px`;
+        blockElement.style.maskSize = `${widthElement2}px ${height}px`;
+      });
+    });
+    const elementCount = this.elements.length;
+    const widthElement = Math.round(width / elementCount) + elementCount * 0.1;
+    this.elements.forEach((block2) => {
+      const blockElement = block2.getElement();
+      blockElement.style.width = `${widthElement}px`;
+      blockElement.style.height = `${height}px`;
+      blockElement.style.maskSize = `${widthElement}px ${height}px`;
+    });
+  }
+}
+const statistic = "_statistic_181lv_1";
+const pictureWrap = "_pictureWrap_181lv_10";
+const text = "_text_181lv_18";
+const author = "_author_181lv_27";
+const infoWrap$1 = "_infoWrap_181lv_38";
+const resultWrap = "_resultWrap_181lv_45";
+const wrap$1 = "_wrap_181lv_53";
+const tittleWrap = "_tittleWrap_181lv_59";
+const count = "_count_181lv_63";
+const sentence = "_sentence_181lv_73";
+const miss = "_miss_181lv_78";
+const done = "_done_181lv_82";
+const classes$3 = {
+  statistic,
+  pictureWrap,
+  text,
+  author,
+  infoWrap: infoWrap$1,
+  resultWrap,
+  wrap: wrap$1,
+  tittleWrap,
+  count,
+  sentence,
+  miss,
+  done,
+  "continue": "_continue_181lv_86"
+};
+class Statistic extends BaseComponent {
+  constructor(container2, lesson2, missRounds, continueClickCallback) {
+    var _a, _b;
+    super({ tag: "div", className: classes$3.statistic });
+    __publicField(this, "container");
+    __publicField(this, "lesson");
+    __publicField(this, "continueClickCallback");
+    __publicField(this, "onContinueClick", () => {
+      this.destroy();
+      this.continueClickCallback();
+    });
+    this.container = container2;
+    this.lesson = lesson2;
+    this.continueClickCallback = continueClickCallback;
+    const pictureInformation = getPictureInformation((_a = this.lesson.getCurrentLesson()) == null ? void 0 : _a.levelData);
+    const resultInformation = this.getResultInformation((_b = this.lesson.getCurrentLesson()) == null ? void 0 : _b.words, missRounds);
+    this.appendChild([pictureInformation, resultInformation]);
+  }
+  init() {
+    this.container.append(this);
+  }
+  getResultInformation(words, missRounds) {
+    const done2 = div({ className: classes$3.wrap });
+    const miss2 = div({ className: classes$3.wrap });
+    const elements = [];
+    if (missRounds.length) {
+      const missElements = fillMissRounds(missRounds);
+      if (missElements.length) {
+        miss2.appendChild(missElements);
+        elements.push(miss2);
+      }
+    }
+    if (words && words.length) {
+      const doneRounds = words.filter((word) => !missRounds.includes(word));
+      if (doneRounds.length) {
+        const doneElements = fillDoneRounds(doneRounds);
+        done2.appendChild(doneElements);
+        elements.push(done2);
+      }
+    }
+    const continueButton = Button({ textContent: "Continue", onClick: this.onContinueClick, className: classes$3.continue });
+    elements.push(continueButton);
+    const result = div({ className: classes$3.resultWrap });
+    result.appendChild(elements);
+    return result;
+  }
+}
+function getPictureInformation(tittle2) {
+  return div(
+    { className: classes$3.pictureWrap },
+    img({ src: `${URL}images/${tittle2 == null ? void 0 : tittle2.cutSrc}`, alt: tittle2 == null ? void 0 : tittle2.name, className: classes$3.picture, width: 100, height: 60 }),
+    div(
+      { className: classes$3.infoWrap },
+      p(classes$3.text, (tittle2 == null ? void 0 : tittle2.name) || ""),
+      p(classes$3.author, `${tittle2 == null ? void 0 : tittle2.author}, ${tittle2 == null ? void 0 : tittle2.year}` || "")
+    )
+  );
+}
+function fillMissRounds(missRounds) {
+  const tittle2 = div(
+    { className: classes$3.tittleWrap },
+    p(classes$3.text, `I don't know`),
+    span({ className: `${classes$3.count} ${classes$3.miss}`, textContent: `${missRounds.length}` })
+  );
+  const list = missRounds.map((round2) => {
+    const playButton = new Play();
+    playButton.setFile(round2.audioExample);
+    const sentence2 = p(classes$3.text, round2.textExample);
+    return div({ className: classes$3.sentence }, playButton, sentence2);
+  });
+  return [tittle2, ...list];
+}
+function fillDoneRounds(doneRounds) {
+  const tittle2 = div(
+    { className: classes$3.tittleWrap },
+    p(classes$3.text, `I know`),
+    span({ className: `${classes$3.count} ${classes$3.done}`, textContent: `${doneRounds.length}` })
+  );
+  const list = doneRounds.map((round2) => {
+    const playButton = new Play();
+    playButton.setFile(round2.audioExample);
+    const sentence2 = p(classes$3.text, round2.textExample);
+    return div({ className: classes$3.sentence }, playButton, sentence2);
+  });
+  return [tittle2, ...list];
+}
+const gameWrapper$1 = "_gameWrapper_15dv5_1";
+const game = "_game_15dv5_1";
+const puzzleContainer = "_puzzleContainer_15dv5_15";
+const separator = "_separator_15dv5_23";
+const picture = "_picture_15dv5_29";
+const buttonsContainer = "_buttonsContainer_15dv5_33";
+const hide = "_hide_15dv5_42";
+const infoWrap = "_infoWrap_15dv5_47";
+const infoText = "_infoText_15dv5_53";
+const classes$2 = {
+  gameWrapper: gameWrapper$1,
+  game,
+  puzzleContainer,
+  separator,
+  picture,
+  buttonsContainer,
+  hide,
+  infoWrap,
+  infoText
+};
+class PuzzleGame extends BaseComponent {
+  constructor(container2, hint2, progressBar2, lessons) {
+    super({ tag: "div", className: `${classes$2.gameWrapper} ${classes$2.game}` });
+    __publicField(this, "container");
+    __publicField(this, "puzzle");
+    __publicField(this, "progressBar");
+    __publicField(this, "submitButton");
+    __publicField(this, "showAnswerButton");
+    __publicField(this, "showStatisticButton");
+    __publicField(this, "missRounds", []);
+    __publicField(this, "box");
+    __publicField(this, "wrap");
+    __publicField(this, "isMarked", false);
+    __publicField(this, "isWin", false);
+    __publicField(this, "isLessonEnd", false);
+    __publicField(this, "image");
+    __publicField(this, "lessons");
+    __publicField(this, "hint");
+    __publicField(this, "sentence", []);
+    __publicField(this, "backgroundToggle", (value) => {
+      this.puzzle.backgroundToggle(value);
+    });
+    __publicField(this, "onLoadImage", () => {
+      this.hint.updatePlayFile();
+      this.hint.updatesTextTranslate();
+      this.renderRound();
+    });
+    __publicField(this, "puzzleClickCallback", (currentPuzzle) => {
+      if (this.isMarked) {
+        this.hideMark();
+      }
+      if (currentPuzzle) {
+        this.box.movePuzzleToFirstEmpty(currentPuzzle);
+      }
+      this.isComplete();
+    });
+    __publicField(this, "dragStartCallback", () => {
+      if (this.isMarked) {
+        this.hideMark();
+      }
+    });
+    __publicField(this, "dragEndCallback", (currentBlock) => {
+      this.box.movePuzzleToOverContainer(currentBlock);
+      this.isComplete();
+    });
+    __publicField(this, "onSubmit", () => {
+      if (this.isLessonEnd) {
+        this.startNextLesson();
+      } else if (!this.isWin) {
+        this.checkAnswer();
+      } else {
+        this.startNewRound();
+      }
+    });
+    __publicField(this, "showAnswer", () => {
+      this.showAnswerButton.addClass(classes$2.hide);
+      const round2 = this.lessons.getCurrentRound();
+      if (round2) {
+        this.missRounds.push(round2);
+      }
+      this.box.showAnswer(this.puzzle.getElements());
+      this.isWin = true;
+      this.hint.showAllHints();
+      this.puzzle.showBackground();
+      this.fixLine();
+      this.submitButton.getElement().textContent = "Continue";
+      this.showCheck();
+    });
+    __publicField(this, "showStatistic", () => {
+      this.removeClass(classes$2.game);
+      this.hint.hide();
+      this.progressBar.hide();
+      this.clear();
+      this.clearChild();
+      const statisticModal = new Statistic(this.container, this.lessons, this.missRounds, this.continueClickCallback);
+      statisticModal.init();
+    });
+    __publicField(this, "continueClickCallback", () => {
+      this.showStatisticButton.addClass(classes$2.hide);
+      this.addClass(classes$2.game);
+      this.hint.show();
+      this.progressBar.show();
+      this.appendChild([
+        this.wrap.picture,
+        this.wrap.separator,
+        this.wrap.puzzle,
+        this.wrap.buttons
+      ]);
+      this.startNextLesson();
+      this.container.getElement().append(this.element);
+    });
+    __publicField(this, "chooseLessonCallback", () => {
+      this.startNewLesson();
+    });
+    __publicField(this, "resizeWindow", () => {
+      const size = this.getActualSize();
+      this.box.resize(size.width, size.height);
+      this.puzzle.resize(size.width, size.height);
+    });
+    this.container = container2;
+    this.lessons = lessons;
+    this.hint = hint2;
+    this.progressBar = progressBar2;
+    this.progressBar.setChooseLessonCallback(this.chooseLessonCallback);
+    this.wrap = {
+      picture: new BaseComponent({ tag: "div", className: `${classes$2.puzzleContainer}`, id: "picture" }),
+      puzzle: new BaseComponent({ tag: "div", className: `${classes$2.puzzleContainer}`, id: "puzzle" }),
+      buttons: new BaseComponent({ tag: "div", className: `${classes$2.buttonsContainer}` }),
+      separator: div({ className: classes$2.separator })
+    };
+    this.box = new Box(this.wrap.picture, this.wrap.puzzle);
+    this.submitButton = Button({ textContent: "Check", onClick: this.onSubmit, className: classes$2.hide });
+    this.showAnswerButton = Button({ textContent: "Show answer", onClick: this.showAnswer });
+    this.showStatisticButton = Button({ textContent: "Statistic", onClick: this.showStatistic, className: classes$2.hide });
+    this.wrap.buttons.appendChild([this.showAnswerButton, this.showStatisticButton, this.submitButton]);
+    this.appendChild([
+      this.wrap.picture,
+      this.wrap.separator,
+      this.wrap.puzzle,
+      this.wrap.buttons
+    ]);
+    this.image = new Image();
+    this.puzzle = new Puzzle(
+      this.image,
+      this.hint.options.getOptions(HintName.onPicture),
+      this.puzzleClickCallback,
+      this.dragStartCallback,
+      this.dragEndCallback
+    );
+    const currentLesson = this.lessons.getCurrentLesson();
+    if (currentLesson) {
+      this.image.onload = this.onLoadImage;
+      this.image.src = `${URL}images/${currentLesson.levelData.imageSrc}`;
+      this.sentence = this.lessons.getSentence().split(" ");
+    }
+    this.container.getElement().append(this.element);
+    window.addEventListener("resize", this.resizeWindow);
+  }
+  renderRound() {
+    if (this.lessons.getCountRound() > 0) {
+      this.fixLine();
+    }
+    this.hideCheck();
+    const line2 = this.lessons.getCountRound();
+    const wordCount = this.sentence.length;
+    const size = this.getActualSize();
+    this.box.renderRound(size.width, size.height, line2, wordCount);
+    this.puzzle.createPuzzle(size.width, size.height, line2, wordCount, this.sentence);
+    this.shufflePuzzle();
+  }
+  fixLine() {
+    this.puzzle.fixLine();
+    this.box.fixLine();
+  }
+  shufflePuzzle() {
+    var _a;
+    const blocks = [...this.puzzle.getElements()];
+    for (let i = this.box.source.length - 1; i >= 0; i -= 1) {
+      const randomIndex = Math.floor(Math.random() * blocks.length);
+      const block2 = blocks[randomIndex];
+      blocks.splice(randomIndex, 1);
+      if (block2 && this.box.source[i]) {
+        (_a = this.box.source[i]) == null ? void 0 : _a.appendChild([block2]);
+      }
+    }
+  }
+  isComplete() {
+    if (this.box.isComplete()) {
+      this.showCheck();
+    } else {
+      this.hideCheck();
+    }
+  }
+  showCheck() {
+    this.submitButton.removeClass(classes$2.hide);
+  }
+  hideCheck() {
+    this.submitButton.addClass(classes$2.hide);
+  }
+  markAnswer() {
+    this.isMarked = true;
+    this.isWin = this.box.isCorrectAnswer();
+  }
+  startNextLesson() {
+    this.lessons.setNextLevel();
+    this.startNewLesson();
+  }
+  startNewLesson() {
+    var _a;
+    this.fixLine();
+    this.progressBar.updateInfo();
+    this.hint.startNewLesson();
+    this.puzzle.clearFixElements();
+    this.box.clearFixElements();
+    this.sentence = this.lessons.getSentence().split(" ");
+    this.image.src = `${URL}images/${(_a = this.lessons.getCurrentLesson()) == null ? void 0 : _a.levelData.imageSrc}`;
+    this.submitButton.getElement().textContent = "Check";
+    this.showAnswerButton.removeClass(classes$2.hide);
+    this.showStatisticButton.addClass(classes$2.hide);
+    this.wrap.picture.destroyChild();
+    this.wrap.picture.clear();
+    this.wrap.picture.clearChild();
+    this.wrap.separator.destroyChild();
+    this.isLessonEnd = false;
+    this.isWin = false;
+    this.missRounds = [];
+  }
+  checkAnswer() {
+    this.markAnswer();
+    if (this.isWin) {
+      this.puzzle.showBackground();
+      this.fixLine();
+      this.hint.showAllHints();
+      this.showAnswerButton.addClass(classes$2.hide);
+      this.submitButton.getElement().textContent = "Continue";
+    }
+  }
+  startNewRound() {
+    this.hideMark();
+    this.fixLine();
+    this.lessons.setNextRound();
+    this.hint.startNewLesson();
+    this.showAnswerButton.removeClass(classes$2.hide);
+    this.sentence = this.lessons.getSentence().split(" ");
+    if (this.lessons.getCountRound() < this.lessons.getLessonLength()) {
+      this.renderRound();
+      this.submitButton.getElement().textContent = "Check";
+      this.isWin = false;
+    } else {
+      this.showPictureInformation();
+      this.lessons.addToHistory();
+      this.submitButton.getElement().textContent = "Next lesson";
+      this.showStatisticButton.removeClass(classes$2.hide);
+      this.showAnswerButton.addClass(classes$2.hide);
+      this.isLessonEnd = true;
+    }
+  }
+  showPictureInformation() {
+    var _a, _b, _c;
+    this.wrap.picture.getElement().style.backgroundImage = `url(${this.image.src})`;
+    this.wrap.separator.appendChild([
+      div(
+        { className: classes$2.infoWrap },
+        span({ className: classes$2.infoText, textContent: `Author: ${(_a = this.lessons.getCurrentLesson()) == null ? void 0 : _a.levelData.author}` }),
+        span({ className: classes$2.infoText, textContent: `Name: ${(_b = this.lessons.getCurrentLesson()) == null ? void 0 : _b.levelData.name}` }),
+        span({ className: classes$2.infoText, textContent: `${(_c = this.lessons.getCurrentLesson()) == null ? void 0 : _c.levelData.year}` })
+      )
+    ]);
+    this.box.showPicture();
+  }
+  hideMark() {
+    this.isMarked = false;
+    this.box.hideMark();
+    if (this.isWin) {
+      this.submitButton.getElement().textContent = "Check";
+      this.isWin = false;
+    }
+  }
+  getActualSize() {
+    const windowWidth = window.innerWidth;
+    const containerWidth = windowWidth - windowWidth * 0.02;
+    const pictureWidth = Math.min(containerWidth - containerWidth * 0.03, this.image.width);
+    this.wrap.picture.getElement().style.width = `${pictureWidth}px`;
+    this.wrap.puzzle.getElement().style.width = `${pictureWidth}px`;
+    const pictureHeight = this.image.height / this.image.width * pictureWidth;
+    const partWidth = pictureWidth;
+    const partHeight = Math.round(pictureHeight / this.lessons.getLessonLength());
+    return { height: partHeight, width: partWidth };
+  }
+}
+const gamePage = "_gamePage_1dhgm_1";
+const menuWrapper = "_menuWrapper_1dhgm_11";
+const menu = "_menu_1dhgm_11";
+const main = "_main_1dhgm_27";
+const wrap = "_wrap_1dhgm_32";
+const progressBarContainer = "_progressBarContainer_1dhgm_38";
+const hintContainer = "_hintContainer_1dhgm_42";
+const gameWrapper = "_gameWrapper_1dhgm_46";
+const puzzleGameContainer = "_puzzleGameContainer_1dhgm_58";
+const classes$1 = {
+  gamePage,
+  menuWrapper,
+  menu,
+  main,
+  wrap,
+  progressBarContainer,
+  hintContainer,
+  gameWrapper,
+  puzzleGameContainer
+};
+class Game extends BaseComponent {
+  constructor(container2, options2, logoutCallback, lessons) {
+    super({ tag: "div", className: classes$1.gamePage });
+    __publicField(this, "container");
+    __publicField(this, "options");
+    __publicField(this, "header");
+    __publicField(this, "progressBar");
+    __publicField(this, "progressBarContainer");
+    __publicField(this, "hintContainer");
+    __publicField(this, "puzzleGameContainer");
+    __publicField(this, "hint");
+    __publicField(this, "puzzleGame");
+    __publicField(this, "lessons");
+    this.container = container2;
+    this.options = options2;
+    this.lessons = lessons;
+    this.header = new Header(logoutCallback);
+    this.puzzleGameContainer = div({ className: classes$1.gameWrapper });
+    this.progressBarContainer = div({ className: classes$1.progressBarContainer });
+    this.hintContainer = div({ className: classes$1.hintContainer });
+    this.progressBar = new ProgressBar(this.progressBarContainer, this.lessons);
+    this.puzzleGameContainer.append(div({ className: classes$1.wrap }, this.progressBarContainer, this.hintContainer));
+    this.hint = new Hint(this.hintContainer, this.options, this.lessons);
+    this.puzzleGame = new PuzzleGame(this.puzzleGameContainer, this.hint, this.progressBar, this.lessons);
+    this.hint.setOnPictureCallback(this.puzzleGame.backgroundToggle);
+  }
+  showGame() {
+    this.container.append(this.element);
+    this.appendChild([
+      this.header,
+      div(
+        { className: classes$1.main },
+        this.puzzleGameContainer
+      )
+    ]);
+  }
+}
+class Store {
+  constructor() {
+    __publicField(this, "storage");
+    __publicField(this, "storeKey");
+    this.storage = window.localStorage;
+    this.storeKey = STORE_NAME;
+  }
+  getUser() {
+    const data = this.get(STORE_USER);
+    if (isUserType(data)) {
+      return data;
+    }
+    return null;
+  }
+  setUser(user2) {
+    const data = {
+      firstName: user2.firstName,
+      lastName: user2.lastName
+    };
+    this.set(STORE_USER, data);
+  }
+  getOptions() {
+    const data = this.get(STORE_OPTIONS);
+    if (isOptionsType(data)) {
+      return data;
+    }
+    return null;
+  }
+  setOptions(options2) {
+    this.set(STORE_OPTIONS, options2);
+  }
+  getLastLesson() {
+    const data = this.get(STORE_LAST_LESSON);
+    if (typeof data === "string") {
+      return data;
+    }
+    return null;
+  }
+  setLastLesson(value) {
+    this.set(STORE_LAST_LESSON, value);
+  }
+  getHistory() {
+    const data = this.get(STORE_HISTORY);
+    if (Array.isArray(data) && isLessonType(data)) {
+      return data;
+    }
+    return [];
+  }
+  setHistory(value) {
+    this.set(STORE_HISTORY, value);
+  }
+  removeUser() {
+    this.storage.removeItem(`${this.storeKey}-${STORE_USER}`);
+    this.storage.removeItem(`${this.storeKey}-${STORE_OPTIONS}`);
+    this.storage.removeItem(`${this.storeKey}-${STORE_LAST_LESSON}`);
+    this.storage.removeItem(`${this.storeKey}-${STORE_HISTORY}`);
+  }
+  set(key, value) {
+    this.storage.setItem(
+      `${this.storeKey}-${key}`,
+      JSON.stringify(value)
+    );
+  }
+  get(key) {
+    try {
+      const storedDataString = this.storage.getItem(
+        `${this.storeKey}-${key}`
+      );
+      if (storedDataString) {
+        return JSON.parse(storedDataString);
+      }
+      return null;
+    } catch (err) {
+      return null;
+    }
+  }
+}
+class User {
+  constructor(store2) {
+    __publicField(this, "firstName", "");
+    __publicField(this, "lastName", "");
+    __publicField(this, "store");
+    this.store = store2;
+    const savedUser = this.store.getUser();
+    if (savedUser) {
+      this.setName(savedUser.firstName, savedUser.lastName, false);
+    }
+  }
+  setName(firstName, lastName, toStore = true) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    if (toStore) {
+      this.store.setUser(this);
+    }
+  }
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+  isEmpty() {
+    return this.firstName === "" && this.lastName === "";
+  }
+  clear() {
+    this.firstName = "";
+    this.lastName = "";
+  }
+}
+class Options {
+  constructor(store2) {
+    __publicField(this, "items", {
+      onSound: true,
+      onTranslate: true,
+      onPicture: true
+    });
+    __publicField(this, "store");
+    this.store = store2;
+    const savedOptions = this.store.getOptions();
+    if (savedOptions) {
+      this.items.onSound = savedOptions.onSound;
+      this.items.onTranslate = savedOptions.onTranslate;
+      this.items.onPicture = savedOptions.onPicture;
+    }
+  }
+  setOption(option, value) {
+    this.items[option] = value;
+    this.store.setOptions(this.items);
+  }
+  getFullOptions() {
+    return this.items;
+  }
+  getOptions(option) {
+    return this.items[option];
+  }
+}
+const mockData = [
   {
     levelData: {
       id: "1_01",
@@ -19230,5 +21085,203 @@ const mockData: LessonType[] = [
     ]
   }
 ];
-
-export default mockData
+class Lessons {
+  constructor(data, store2) {
+    __publicField(this, "lessons", []);
+    __publicField(this, "currentLesson", null);
+    __publicField(this, "history", []);
+    __publicField(this, "countRound", 0);
+    __publicField(this, "store");
+    this.lessons = data;
+    this.store = store2;
+    this.getFormStore();
+  }
+  getCurrentLesson() {
+    return this.currentLesson;
+  }
+  getCountLessonsInLevel(level2) {
+    return this.lessons.filter((lesson2) => lesson2.levelData.id.split("_")[0] === level2).length;
+  }
+  getSentence() {
+    var _a;
+    if (this.currentLesson) {
+      return ((_a = this.currentLesson.words[this.countRound]) == null ? void 0 : _a.textExample) || "";
+    }
+    return "";
+  }
+  getCurrentRound() {
+    var _a;
+    return (_a = this.currentLesson) == null ? void 0 : _a.words[this.countRound];
+  }
+  getTranslate() {
+    var _a;
+    if (this.currentLesson) {
+      return ((_a = this.currentLesson.words[this.countRound]) == null ? void 0 : _a.textExampleTranslate) || "";
+    }
+    return "";
+  }
+  getAudioFile() {
+    var _a;
+    if (this.currentLesson) {
+      return ((_a = this.currentLesson.words[this.countRound]) == null ? void 0 : _a.audioExample) || "";
+    }
+    return "";
+  }
+  resetProgress() {
+    this.currentLesson = this.getFirstLesson();
+    this.countRound = 0;
+  }
+  getCountRound() {
+    return this.countRound;
+  }
+  setNextLevel() {
+    if (this.currentLesson) {
+      this.store.setLastLesson(this.currentLesson.levelData.id);
+      const nextLevel = this.lessons[this.lessons.indexOf(this.currentLesson) + 1];
+      if (nextLevel) {
+        this.currentLesson = nextLevel;
+        this.countRound = 0;
+      }
+    }
+  }
+  setLesson(id) {
+    const lesson2 = this.getLessonById(id);
+    if (lesson2) {
+      this.currentLesson = lesson2;
+      this.countRound = 0;
+    }
+  }
+  addToHistory() {
+    if (this.currentLesson) {
+      this.history.push(this.currentLesson);
+      this.store.setHistory(this.history);
+    }
+  }
+  setNextRound() {
+    this.countRound += 1;
+  }
+  getLessonLength() {
+    var _a;
+    return ((_a = this.currentLesson) == null ? void 0 : _a.words.length) || 0;
+  }
+  getLessonById(id) {
+    return this.lessons.find((lesson2) => lesson2.levelData.id === id) || null;
+  }
+  getFirstLesson() {
+    return this.lessons[0] || null;
+  }
+  getFormStore() {
+    const data = this.store.getLastLesson();
+    let lesson2 = this.getFirstLesson();
+    if (data) {
+      lesson2 = this.getLessonById(data);
+      if (lesson2) {
+        const nextLesson = this.lessons[this.lessons.indexOf(lesson2) + 1];
+        lesson2 = nextLesson || lesson2;
+      }
+    }
+    if (lesson2) {
+      this.currentLesson = lesson2;
+    }
+    const history = this.store.getHistory();
+    if (history) {
+      this.history = history;
+    }
+  }
+  getLessons() {
+    return this.lessons;
+  }
+  getHistory() {
+    return this.history;
+  }
+}
+const background = "_background_yzss2_1";
+const tittle = "_tittle_yzss2_11";
+const description = "_description_yzss2_21";
+const modal = "_modal_yzss2_31";
+const yes = "_yes_yzss2_42";
+const wrapper = "_wrapper_yzss2_49";
+const buttonsWrapper = "_buttonsWrapper_yzss2_58";
+const classes = {
+  background,
+  tittle,
+  description,
+  modal,
+  yes,
+  wrapper,
+  buttonsWrapper
+};
+const YES_TXT = "Yes, delete";
+const NO_TXT = "No, back";
+class Confirm extends BaseComponent {
+  constructor(container2, logoutCallback) {
+    super({ tag: "aside", className: classes.background });
+    __publicField(this, "yesBtn");
+    __publicField(this, "noBtn");
+    __publicField(this, "container");
+    __publicField(this, "modal");
+    __publicField(this, "logoutCallback");
+    this.logoutCallback = logoutCallback;
+    this.container = container2;
+    this.yesBtn = Button({
+      textContent: YES_TXT,
+      onClick: () => {
+        this.logoutCallback();
+      },
+      className: classes.yes
+    });
+    this.noBtn = Button({
+      textContent: NO_TXT,
+      onClick: () => {
+        this.destroy();
+      }
+    });
+    this.modal = div(
+      { className: classes.modal },
+      div(
+        { className: classes.wrapper },
+        h2(classes.tittle, `Confirm command`),
+        p(classes.description, CONFIRM_LOGOUT),
+        div(
+          { className: classes.buttonsWrapper },
+          this.yesBtn,
+          this.noBtn
+        )
+      )
+    );
+    this.appendChild([this.modal]);
+  }
+  init() {
+    this.container.append(this.getElement());
+  }
+}
+const { body } = document;
+const store = new Store();
+const user = new User(store);
+const options = new Options(store);
+const dataModel = new Lessons(mockData, store);
+function clearContainer() {
+  body.innerHTML = "";
+}
+function clearUser() {
+  store.removeUser();
+  dataModel.resetProgress();
+  user.clear();
+}
+function logout() {
+  const confirm = new Confirm(body, confirmLogout);
+  confirm.init();
+}
+function confirmLogout() {
+  clearUser();
+  clearContainer();
+  startPage.logout();
+}
+function startGame() {
+  clearContainer();
+  const gamePage2 = new Game(body, options, logout, dataModel);
+  gamePage2.showGame();
+}
+const startPage = new StartPage(body, user, startGame, logout);
+startPage.initApp();
+//# sourceMappingURL=main-DTX13DhQ.js.map
